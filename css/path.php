@@ -37,32 +37,15 @@ class CSSPath {
 	/**
 	 * 
 	 * @param string $key
-	 * @return CSSProperty
-	 */
-	public function getProperty($key){
-		foreach(array_reverse($this->rulesets) as $ruleset){
-			$property = $this->translator->getProperty($ruleset, $key);
-			if($property==null) return null;
-			try {
-				if($property->getName()=='inherit') continue;
-			}catch(Exception $ex){
-				
-			}
-			return $property;
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * 
-	 * @param string $key
 	 * @return mixed
 	 */
 	public function getValue($key){
-		$property = $this->getProperty($key);
-		if($property==null) return null;
-		return $this->translator->getValue($property, $key);
+		foreach(array_reverse($this->rulesets) as $ruleset){
+			$value = $this->translator->getValue($ruleset, $key);
+			if($this->translator->inherits($value, $key)) continue;
+			return $value;
+		}
+		return null;
 	}
 	
 	/**
@@ -93,5 +76,14 @@ class CSSPath {
 		$last->setSelector(null);
 
 		array_pop($this->rulesets);
+	}
+	
+
+	/**
+	 * Returns the CSS
+	 * @return string
+	 */
+	public function __toString(){
+		return $this->items[0]->__toString();
 	}
 }

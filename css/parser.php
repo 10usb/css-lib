@@ -15,6 +15,10 @@ class CSSparser {
 		$this->document	= $document;
 	}
 	
+	/**
+	 * 
+	 * @param string $test
+	 */
 	public function parse($text){
 		$offset = 0;
 		$state = 0;
@@ -28,8 +32,11 @@ class CSSparser {
 				if(!preg_match('/\s*(.+?)\s*{/is', substr($text, $offset), $matches)) throw new Exception("Invalid selector at '".substr($text, $offset, 20)."'");
 				$offset+= strlen($matches[0]);
 				
-				$ruleset = new CSSRuleSet($this->parseSelector($matches[1]));
-				$this->document->addRuleSet($ruleset);
+				$selectors = array();
+				foreach(explode(',', $matches[1]) as $selector){
+					$selectors[] = $this->parseSelector(trim($selector));
+				}
+				$ruleset = $this->document->createRuleSet($selectors);
 		
 				$state = 1;
 			}else{

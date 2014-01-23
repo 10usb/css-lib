@@ -69,6 +69,7 @@ class CSSProperty {
 		foreach($this->values as $value){
 			if($value->isColor()) return $value;
 		}
+		throw new Exception("Invalid values: ".$this);
 	}
 	
 	/**

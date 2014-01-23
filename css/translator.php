@@ -5,15 +5,15 @@ abstract class CSSTranslator {
 	 * 
 	 * @param CSSRuleSet $ruleset
 	 * @param string $key
-	 * @return CSSValue
+	 * @return mixed
 	 */
-	public abstract function getProperty($ruleset, $key);
+	public abstract function getValue($ruleset, $key);
 	
 	/**
 	 * 
-	 * @param CSSValue $property
+	 * @param mixed $value
 	 * @param string $key
-	 * @return mixed
+	 * @return boolean
 	 */
-	public abstract function getValue($value, $key);
+	public abstract function inherits($value, $key);
 }

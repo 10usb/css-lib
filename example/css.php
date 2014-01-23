@@ -1,30 +1,22 @@
 <?php
+header('Content-Type: text/plain');
+
 include '../css/css.php';
+include 'translator.php';
 
 $document = new CSSDocument();
 $parser = new CSSParser($document);
 $parser->parse(file_get_contents('doc.css'));
 
+$path = new CSSPath($document, new ExampleTranslator());
+$path->push('section', null, null);
+$path->push('body', null, null);
+$path->push('p', array('special'), null);
+$path->push('span', null, null);
+$path->push('strong', null, null);
 
+echo $path."\n\n";
+print_r($path->getValue('color'));
+echo "\n";
 
-
-echo '<pre>';
-
-$selector = $current = new CSSSelector(null, 'section', null, null);
-$current = $current->setSelector(new CSSSelector('>', 'body', null, null));
-$current = $current->setSelector(new CSSSelector('>', 'p', array('special'), null));
-$current = $current->setSelector(new CSSSelector('>', 'strong', null, null));
-
-echo $selector."\n";
-echo $document->match($selector);
-
-echo "\n------------\n";
-
-$selector = $current = new CSSSelector(null, 'section', null, null);
-$current = $current->setSelector(new CSSSelector('>', 'body', null, null));
-$current = $current->setSelector(new CSSSelector('>', 'p', array('special'), null));
-$current = $current->setSelector(new CSSSelector('>', 'span', null, null));
-$current = $current->setSelector(new CSSSelector('>', 'strong', null, null));
-
-echo $selector."\n";
-echo $document->match($selector);
+echo $document;

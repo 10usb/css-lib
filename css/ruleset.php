@@ -2,12 +2,13 @@
 
 class CSSRuleSet {
 	private $selectors;
-	private $specificity;
+	private $index;
 	private $properties;
 	
-	public function __construct($selector = null){
-		$this->selector		= $selector;
-		$this->specificity	= $selector ? $selector->getSpecificity(new CSSSpecificity()) : null;
+	
+	public function __construct($selectors = array()){
+		$this->selectors	= $selectors;
+		$this->index		= -1;
 		$this->properties	= array();
 	}
 	
@@ -47,36 +48,22 @@ class CSSRuleSet {
 	 * @param number $index
 	 */
 	public function setIndex($index){
-		$this->specificity->i = $index;
+		$this->index = $index;
 	}
 	
 	/**
 	 * 
 	 * @param CSSSelector $path
+	 * @return array<CSSMatch>
 	 */
 	public function match($path){
-		return $this->selector->match($path);
-	}
-
-	/**
-	 *
-	 * @param CSSRuleSet $a
-	 * @param CSSRuleSet $b
-	 */
-	public static function compare($a, $b){
-		if($a->specificity->a != $b->specificity->a){
-			return $a->specificity->a < $b->specificity->a ? -1 : 1;
+		$matches = array();
+		foreach($this->selectors as $selector){
+			if($selector->match($path)){
+				$matches[] = new CSSMatch($selector, $this, $this->index);
+			}
 		}
-		if($a->specificity->b != $b->specificity->b){
-			return $a->specificity->b < $b->specificity->b ? -1 : 1;
-		}
-		if($a->specificity->c != $b->specificity->c){
-			return $a->specificity->c < $b->specificity->c ? -1 : 1;
-		}
-		if($a->specificity->i != $b->specificity->i){
-			return $a->specificity->i < $b->specificity->i ? -1 : 1;
-		}
-		return 0;
+		return $matches;
 	}
 	
 	/**
@@ -84,7 +71,7 @@ class CSSRuleSet {
 	 * @return string
 	 */
 	public function __toString(){
-		$css = ($this->selector ? $this->selector : '/* null */')." {\n";
+		$css = ($this->selectors ? implode(', ', $this->selectors) : '/* null */')." {\n";
 		foreach($this->properties as $key=>$value){
 			$css.= "  $key: $value;\n";
 		}

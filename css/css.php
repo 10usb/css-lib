@@ -6,6 +6,7 @@ class PDFCSS {
 		include self::path('selector.php');
 		include self::path('specificity.php');
 		include self::path('property.php');
+		include self::path('match.php');
 		include self::path('value.php');
 		include self::path('name.php');
 		include self::path('string.php');

@@ -30,7 +30,7 @@ class CSSColor extends CSSValue {
 	 * @see CSSValue::isColor()
 	 */
 	public function isColor(){
-		return false;
+		return true;
 	}
 	
 	/**

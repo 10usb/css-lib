@@ -11,9 +11,11 @@ class CSSDocument {
 	 * 
 	 * @param CSSRuleSet $ruleset
 	 */
-	public function addRuleSet($ruleset){
+	public function createRuleSet($selectors){
+		$ruleset = new CSSRuleSet($selectors);
 		$ruleset->setIndex(count($this->rulesets));
 		$this->rulesets[] = $ruleset;
+		return $ruleset;
 	}
 	
 	/**
@@ -23,14 +25,13 @@ class CSSDocument {
 	public function match($path){
 		$matches = array();
 		foreach($this->rulesets as $ruleset){
-			if($ruleset->match($path)){
-				$matches[] = $ruleset;
-			}
+			$matches = array_merge($matches, $ruleset->match($path));
 		}
-		usort($matches, array('CSSRuleSet', 'compare'));
+		
+		usort($matches, array('CSSMatch', 'compare'));
 		$result = new CSSRuleSet();
-		foreach($matches as $ruleset){
-			foreach($ruleset->getProperties() as $key=>$value){
+		foreach($matches as $match){
+			foreach($match->getRuleSet()->getProperties() as $key=>$value){
 				$result->setProperty($key, $value);
 			}
 		}
