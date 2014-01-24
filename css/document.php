@@ -20,22 +20,9 @@ class CSSDocument {
 	
 	/**
 	 * 
-	 * @param CSSSelector $path
 	 */
-	public function match($path){
-		$matches = array();
-		foreach($this->rulesets as $ruleset){
-			$matches = array_merge($matches, $ruleset->match($path));
-		}
-		
-		usort($matches, array('CSSMatch', 'compare'));
-		$result = new CSSRuleSet();
-		foreach($matches as $match){
-			foreach($match->getRuleSet()->getProperties() as $key=>$value){
-				$result->setProperty($key, $value);
-			}
-		}
-		return $result;
+	public function getRuleSets(){
+		return $this->rulesets;
 	}
 
 	/**

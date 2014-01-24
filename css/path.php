@@ -62,8 +62,19 @@ class CSSPath {
 		}
 		$this->items[] = $selector;
 		
-
-		$ruleset = $this->document->match($this->items[0]);
+		$matches = array();
+		foreach($this->document->getRuleSets() as $ruleset){
+			$matches = array_merge($matches, $ruleset->match($this->items[0]));
+		}
+		usort($matches, array('CSSMatch', 'compare'));
+		
+		$ruleset = new CSSRuleSet();
+		foreach($matches as $match){
+			// This should be done by the translator
+			foreach($match->getRuleSet()->getProperties() as $key=>$value){
+				$this->translator->translate($key, $value, $ruleset);
+			}
+		}
 		$this->rulesets[] = $ruleset;
 	}
 	
