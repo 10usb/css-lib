@@ -1,6 +1,6 @@
 <?php
 
-class CSSparser {
+class CSSParser {
 	/**
 	 * 
 	 * @var CSSDocument
