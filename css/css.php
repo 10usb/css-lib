@@ -6,6 +6,7 @@ class CSSLib {
 		include self::path('ruleset.php');
 		include self::path('selector.php');
 		include self::path('property.php');
+		include self::path('valuelist.php');
 		
 		// Values
 		include self::path('values/value.php');

@@ -11,11 +11,11 @@ class CSSValue {
 	 * 
 	 * @param string $value
 	 * @throws Exception
-	 * @return CSSName|CSSString|CSSColor|CSSMeasurement
+	 * @return CSSValue
 	 */
 	public static function parse($value){
 		if(preg_match('/^([a-z\-]+)$/is', $value)) return new CSSName($value);
-		if(preg_match('/^"([^"]+)"$/is', $value)) return new CSSString($value);
+		if(preg_match('/^"(([^"]\\"|[^"])+)"|\'(([^\']\\\'|[^\'])+)\'$/is', $value)) return new CSSString($value);
 		if(preg_match('/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is', $value)) return new CSSColor($value);
 		if(preg_match('/^(\d+(\.\d+)?)(\%|in|cm|mm|em|pt|pc|px)$/is', $value)) return new CSSMeasurement($value);
 		

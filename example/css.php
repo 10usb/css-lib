@@ -4,6 +4,7 @@ header('Content-Type: text/plain');
 include '../css/css.php';
 include 'translator.php';
 
+
 $document = new CSSDocument();
 $parser = new CSSParser($document);
 $parser->parse(file_get_contents('doc.css'));
