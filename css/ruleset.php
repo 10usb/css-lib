@@ -45,6 +45,14 @@ class CSSRuleSet {
 	
 	/**
 	 * 
+	 * @return array<string>
+	 */
+	public function getSelectors(){
+		return $this->selectors;
+	}
+	
+	/**
+	 * 
 	 * @param number $index
 	 */
 	public function setIndex($index){

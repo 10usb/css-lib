@@ -20,6 +20,7 @@ class CSSDocument {
 	
 	/**
 	 * 
+	 * @return array<CSSRuleSet>
 	 */
 	public function getRuleSets(){
 		return $this->rulesets;
