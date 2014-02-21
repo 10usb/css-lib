@@ -30,11 +30,15 @@ class CSSDocument {
 	 * Returns the CSS
 	 * @return string
 	 */
+	public function format($formatter){
+		return $formatter->document($this);
+	}
+
+	/**
+	 * Returns the CSS
+	 * @return string
+	 */
 	public function __toString(){
-		$css = '';
-		foreach($this->rulesets as $ruleset){
-			$css.= $ruleset."\n";
-		}
-		return $css;
+		return $this->format(CSSDefaultFormatter::getInstance());
 	}
 }

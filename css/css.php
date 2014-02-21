@@ -23,6 +23,10 @@ class CSSLib {
 		include self::path('query/specificity.php');
 		include self::path('query/path.php');
 		include self::path('query/translator.php');
+		
+		// Formatting
+		include self::path('formatters/formatter.php');
+		include self::path('formatters/default.php');
 	}
 
 	public static function path($file){

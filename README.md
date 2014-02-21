@@ -14,4 +14,4 @@ TODO:
  - Support for At-Rules by adding a extra layer between the document and the rulesets
  - Default kit for processing html
  - Use that kit to make een example inliner
- - Make use of a formatter class in to toString functions, allowing easy minifying or formatting of code, setting the formatting as default.
+ - Make "better" use of a formatter class in to toString functions, allowing easy minifying or formatting of code, setting the formatting as default.
