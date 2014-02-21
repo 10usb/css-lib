@@ -2,6 +2,8 @@
 class CSSLib {
 	public static function init(){
 		// Data structure
+		include self::path('group.php');
+		include self::path('propertyset.php');
 		include self::path('document.php');
 		include self::path('ruleset.php');
 		include self::path('selector.php');

@@ -1,46 +1,14 @@
 <?php
 
-class CSSRuleSet {
+class CSSRuleSet extends CSSPropertySet {
 	private $selectors;
 	private $index;
-	private $properties;
 	
 	
 	public function __construct($selectors = array()){
 		$this->selectors	= $selectors;
 		$this->index		= -1;
-		$this->properties	= array();
-	}
-	
-	/**
-	 * 
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function setProperty($key, $value){
-		if($value instanceof CSSProperty){
-			$this->properties[$key] = $value;
-		}else{
-			$this->properties[$key] = new CSSProperty($value);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param string $key
-	 * @return CSSProperty
-	 */
-	public function getProperty($key){
-		if(isset($this->properties[$key])) return $this->properties[$key];
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @return array<string>
-	 */
-	public function getProperties(){
-		return $this->properties;
+		parent::__construct();
 	}
 	
 	/**
@@ -79,11 +47,6 @@ class CSSRuleSet {
 	 * @return string
 	 */
 	public function __toString(){
-		$css = ($this->selectors ? implode(', ', $this->selectors) : '/* null */')." {\n";
-		foreach($this->properties as $key=>$value){
-			$css.= "  $key: $value;\n";
-		}
-		$css.= "}\n";
-		return $css;
+		return ($this->selectors ? implode(', ', $this->selectors) : '/* null */').parent::__toString();
 	}
 }
