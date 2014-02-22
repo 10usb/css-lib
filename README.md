@@ -15,3 +15,4 @@ TODO:
  - Default kit for processing html
  - Use that kit to make een example inliner
  - Make "better" use of a formatter class in to toString functions, allowing easy minifying or formatting of code, setting the formatting as default.
+ - Make a HTMLify formatter set

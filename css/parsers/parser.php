@@ -12,7 +12,36 @@ class CSSParser {
 	 * @param CSSDocument $document
 	 */
 	public function __construct($document){
-		$this->document	= $document;
+		$this->document = $document;
+	}
+	
+	/**
+	 * 
+	 * @return CSSDocument
+	 */
+	public function getDocument(){
+		return $this->document;
+	}
+	
+	/**
+	 * 
+	 */
+	public function move($count){
+		$this->offset+= $count;
+	}
+	
+	/**
+	 * 
+	 */
+	public function getText(){
+		return substr($this->text, $this->offset);
+	}
+	
+	/**
+	 * 
+	 */
+	public function hasText(){
+		return $this->offset < strlen($this->text);
 	}
 	
 	/**
@@ -20,34 +49,11 @@ class CSSParser {
 	 * @param string $test
 	 */
 	public function parse($text){
-		$offset = 0;
-		$state = 0;
-		$ruleset = null;
-		while($offset < strlen($text)){
-			if($state==0){
-				if(preg_match('/^\s+/is', substr($text, $offset), $matches)){
-					$offset+= strlen($matches[0]);
-					if($offset >= strlen($text)) break;
-				}
-				if(!preg_match('/\s*(.+?)\s*{/is', substr($text, $offset), $matches)) throw new Exception("Invalid selector at '".substr($text, $offset, 20)."'");
-				$offset+= strlen($matches[0]);
-				
-				$selectors = array();
-				foreach(explode(',', $matches[1]) as $selector){
-					$selectors[] = $this->parseSelector(trim($selector));
-				}
-				$ruleset = $this->document->createRuleSet($selectors);
+		$this->offset = 0;
+		$this->text = $text;
 		
-				$state = 1;
-			}else{
-				if(!preg_match('/\s+(.+?):\s*((\s*(".+?"|[^"]+?)\s*)(\s*,\s*(".+?"|[^"]+?)\s*)*)((;\s*})|(;|\}))/is', substr($text, $offset), $matches)) throw new Exception("Invalid property at '".substr($text, $offset, 20)."'");
-				$offset+= strlen($matches[0]);
-		
-				$ruleset->setProperty($matches[1], $matches[2]);
-		
-				if(strpos(end($matches), '}')) $state = 0;
-			}
-		}
+		$state = new CSSGroupParser($this);
+		$state->parse();
 	}
 	
 	public function parseSelector($text){
