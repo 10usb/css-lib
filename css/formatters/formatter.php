@@ -1,5 +1,6 @@
 <?php
 
 interface CSSFormatter {
-	public function document(CSSDocument $document);
+	public function document($document);
+	public function ruleset($ruleset);
 }

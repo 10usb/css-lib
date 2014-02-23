@@ -8,12 +8,16 @@ class CSSDefaultFormatter implements CSSFormatter {
 		return self::$instance;
 	}
 	
-	public function document(CSSDocument $document){
+	public function document($document){
 		$css = '';
 		foreach($document->getRuleSets() as $ruleset){
-			$css.= $ruleset."\n";
+			$css.= $ruleset->format($this);
 		}
 		return $css;
 		
+	}
+	
+	public function ruleset($ruleset){
+		return $ruleset."\n";
 	}
 }

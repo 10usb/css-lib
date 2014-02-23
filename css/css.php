@@ -21,6 +21,8 @@ class CSSLib {
 		include self::path('parsers/parser.php');
 		include self::path('parsers/group.php');
 		include self::path('parsers/propertyset.php');
+		include self::path('parsers/ruleset.php');
+		include self::path('parsers/fontface.php');
 		
 		// Querying
 		include self::path('query/match.php');

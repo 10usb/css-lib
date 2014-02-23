@@ -46,6 +46,14 @@ class CSSRuleSet extends CSSPropertySet {
 	 * Returns the CSS
 	 * @return string
 	 */
+	public function format($formatter){
+		return $formatter->ruleset($this);
+	}
+	
+	/**
+	 * Returns the CSS
+	 * @return string
+	 */
 	public function __toString(){
 		return ($this->selectors ? implode(', ', $this->selectors) : '/* null */').parent::__toString();
 	}
