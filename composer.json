@@ -1,0 +1,8 @@
+{
+	"name": "10usb/css-lib",
+	"description": "Library for reading / writing css",
+	"type": "library",
+	"require": {
+		"php": ">=7.*"
+	}
+}
