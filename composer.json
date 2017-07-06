@@ -3,6 +3,6 @@
 	"description": "Library for reading / writing css",
 	"type": "library",
 	"require": {
-		"php": ">=7.*"
+		"php": ">=7.0"
 	}
 }
