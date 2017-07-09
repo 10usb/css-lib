@@ -2,39 +2,133 @@
 namespace csslib;
 
 class Selector {
+	/**
+	 * 
+	 * @var \csslib\Selector
+	 */
+	private $parent;
+	
+	/**
+	 * 
+	 * @var string
+	 */
 	private $type;
+	
+	/**
+	 * 
+	 * @var string
+	 */
+	private $identification;
+	
+	/**
+	 * 
+	 * @var string
+	 */
 	private $tagName;
+	
+	/**
+	 * 
+	 * @var string[]
+	 */
 	private $classes;
+	
+	/**
+	 * 
+	 * @var string[]
+	 */
 	private $pseudos;
+	
+	/**
+	 * 
+	 * @var \csslib\Selector
+	 */
 	private $selector;
 	
 	/**
 	 * 
 	 * @param string $type
+	 * @param string $id
 	 * @param string $tagName
-	 * @param array<string> $classes
-	 * @param array<string> $pseudos
+	 * @param string[] $classes
+	 * @param string[] $pseudos
 	 */
-	public function __construct($type, $tagName, $classes, $pseudos){
-		$this->type		= $type;
-		$this->tagName	= $tagName;
-		$this->classes	= $classes ? $classes : [];
-		$this->pseudos	= $pseudos ? $pseudos : [];
-		$this->selector	= null;
+	public function __construct($parent = null, $type = false, $id = false, $tagName = false, $classes = false, $pseudos = false){
+		$this->parent			= $parent;
+		$this->type				= $type;
+		$this->identification	= $identification;
+		$this->tagName			= $tagName;
+		$this->classes			= $classes ? $classes : [];
+		$this->pseudos			= $pseudos ? $pseudos : [];
+		$this->selector			= null;
 	}
 	
 	/**
 	 * 
-	 * @param CSSSelector $selector
-	 * @return CSSSelector
+	 * @param string $name
+	 * @return \csslib\Selector
 	 */
-	public function setSelector($selector){
-		return $this->selector = $selector;
+	public function setTagName($name){
+		$this->tagName = $name;
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param string $identification
+	 * @return \csslib\Selector
+	 */
+	public function setIdentification($identification){
+		$this->identification= $identification;
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param string $name
+	 * @return \csslib\Selector
+	 */
+	public function addClass($name){
+		$this->classes[] = $name;
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param string $name
+	 * @param mixed $argument
+	 * @return \csslib\Selector
+	 */
+	public function addPseudo($name, $argument = false){
+		$this->pseudos[] = new Pseudo($name, $argument);
+		return $this;
+	}
+	
+	/**
+	 * 
+	 * @param string $type
+	 * @param string $id
+	 * @param string $tagName
+	 * @param string[] $classes
+	 * @param string[] $pseudos
+	 * @return \csslib\Selector
+	 */
+	public function add($type = false, $identification = false, $tagName = false, $classes = false, $pseudos = false){
+		return $this->selector = new self($this, $type, $identification, $tagName, $classes, $pseudos);
+	}
+	
+	/**
+	 * 
+	 * @return \csslib\Selector
+	 */
+	public function get(){
+		if($this->parent) return $this->parent->get();
+		return $this;
 	}
 	
 	/**
 	 * 
 	 * @param CSSSelector $path
+	 * @deprecated should be located in a query class or something
 	 */
 	public function match($path){
 		$current = $path;
@@ -71,6 +165,7 @@ class Selector {
 	/**
 	 * 
 	 * @param CSSSelector $other
+	 * @deprecated should be located in a query class or something
 	 */
 	public function matches($other){
 		if($this->tagName && $this->tagName!=$other->tagName) return false;
@@ -81,12 +176,14 @@ class Selector {
 	
 	/**
 	 * 
-	 * @param CSSSpecificity $specificity
+	 * @param Specificity $specificity
 	 */
 	public function getSpecificity($specificity){
-		if($this->tagName) $specificity->c++;
-		if($this->pseudos) $specificity->c+=count($this->pseudos);
-		if($this->classes) $specificity->b+=count($this->classes);
+		if($this->identification)	$specificity->a++;
+		if($this->classes)			$specificity->b+=count($this->classes);
+		if($this->tagName)			$specificity->c++;
+		if($this->pseudos)			$specificity->c+=count($this->pseudos);
+		
 		if($this->selector!=null) return $this->selector->getSpecificity($specificity);
 		return $specificity;
 	}
@@ -100,18 +197,34 @@ class Selector {
 		if($this->type){
 			$css.= $this->type.' ';
 		}
-		if($this->tagName){
-			$css.= $this->tagName;
-		}
-		if($this->classes){
-			$css.= '.'.implode('.', $this->classes);
-		}
-		if($this->pseudos){
-			$css.= ':'.implode(':', $this->pseudos);
-		}
-		if($this->selector){
-			$css.= ' '.$this->selector;
+		if(!$this->tagName && !$this->identification && !$this->classes && !$this->pseudos){
+			$css.= '*';
+		}else{
+			if($this->tagName){
+				$css.= $this->tagName;
+			}
+			if($this->identification){
+				$css.= '#'.$this->identification;
+			}
+			if($this->classes){
+				$css.= '.'.implode('.', $this->classes);
+			}
+			if($this->pseudos){
+				$css.= ':'.implode(':', $this->pseudos);
+			}
+			if($this->selector){
+				$css.= ' '.$this->selector;
+			}
 		}
 		return $css;
+	}
+	
+	/**
+	 * 
+	 * @param string $type
+	 * @return \csslib\Selector
+	 */
+	public static function create($type = false){
+		return new self(null, $type);
 	}
 }
