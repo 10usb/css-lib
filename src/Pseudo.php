@@ -1,6 +1,10 @@
 <?php
 namespace csslib;
 
+/**
+ * Psudo class allows storing parsed data for the argument over a plain string
+ * @author 10usb
+ */
 class Pseudo {
 	/**
 	 * 

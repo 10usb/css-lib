@@ -1,6 +1,10 @@
 <?php
 namespace csslib;
 
+/**
+ * Represent a single selector of a ruleset
+ * @author 10usb
+ */
 class Selector {
 	/**
 	 * 

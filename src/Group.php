@@ -1,28 +1,23 @@
 <?php
 namespace csslib;
 
-class Group {
+abstract class Group {
+	/**
+	 * Can be a ruleset or an At-Rule
+	 * @var mixed
+	 */
 	private $children;
 	
-	public function __construct(){
-		$this->children	= array();
-	}
-	
 	/**
 	 * 
-	 * @param CSSRuleSet $ruleset
 	 */
-	public function createRuleSet($selectors){
-		$ruleset = new CSSRuleSet($selectors);
-		// TODO index should be determanted by the document.
-		$ruleset->setIndex(count($this->children));
-		$this->children[] = $ruleset;
-		return $ruleset;
+	public function __construct(){
+		$this->children	= [];
 	}
 	
 	/**
 	 * 
-	 * @return RuleSet[]
+	 * @return mixed[]
 	 */
 	public function getChildren(){
 		return $this->children;
