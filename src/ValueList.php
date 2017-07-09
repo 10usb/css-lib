@@ -1,6 +1,7 @@
 <?php
+namespace csslib;
 
-class CSSProperty {
+class ValueList {
 	private $values;
 	
 	/**
@@ -8,10 +9,10 @@ class CSSProperty {
 	 * @param string $values
 	 */
 	public function __construct($value){
-		if(!preg_match_all('/(\s(,\s*)?("(([^"]\\"|[^"])+)"|\'(([^\']\\\'|[^\'])+)\'|[^",]+))/is', " $value ", $matches, PREG_SET_ORDER)) throw new Exception("Invalid property '$value'");
+		if(!preg_match_all('/(\s(".+?"|[^" ,]+))/is', " $value ", $matches, PREG_SET_ORDER)) throw new Exception("Invalid property '$value'");
 		$this->values = array();
 		foreach($matches as $match){
-			$this->values[] = new CSSValueList($match[3]);
+			$this->values[] = CSSValue::parse($match[2]);
 		}
 	}
 	
@@ -27,7 +28,7 @@ class CSSProperty {
 	 * Returns the value at the given position
 	 * @param CSSValue $index
 	 */
-	public function getValueList($index){
+	public function getValue($index){
 		return $this->values[$index];
 	}
 
@@ -36,6 +37,6 @@ class CSSProperty {
 	 * @return string
 	 */
 	public function __toString(){
-		return implode(', ', $this->values);
+		return implode(' ', $this->values);
 	}
 }

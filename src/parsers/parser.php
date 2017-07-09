@@ -1,6 +1,7 @@
 <?php
+namespace csslib\parsers;
 
-class CSSParser {
+class Parser {
 	/**
 	 * 
 	 * @var CSSDocument

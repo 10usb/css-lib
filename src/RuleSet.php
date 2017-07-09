@@ -1,6 +1,7 @@
 <?php
+namespace csslib;
 
-class CSSRuleSet extends CSSPropertySet {
+class RuleSet extends CSSPropertySet {
 	private $selectors;
 	private $index;
 	

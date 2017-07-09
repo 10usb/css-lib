@@ -1,6 +1,7 @@
 <?php
+namespace csslib;
 
-class CSSSelector {
+class Selector {
 	private $type;
 	private $tagName;
 	private $classes;
@@ -17,8 +18,8 @@ class CSSSelector {
 	public function __construct($type, $tagName, $classes, $pseudos){
 		$this->type		= $type;
 		$this->tagName	= $tagName;
-		$this->classes	= $classes ? $classes : array();
-		$this->pseudos	= $pseudos ? $pseudos : array();
+		$this->classes	= $classes ? $classes : [];
+		$this->pseudos	= $pseudos ? $pseudos : [];
 		$this->selector	= null;
 	}
 	

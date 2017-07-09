@@ -1,6 +1,7 @@
 <?php
+namespace csslib;
 
-class CSSDocument extends CSSGroup {
+class Document extends Group {
 	public function __construct(){
 		parent::__construct();
 	}

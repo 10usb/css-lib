@@ -1,6 +1,7 @@
 <?php
+namespace csslib;
 
-class CSSPropertySet {
+class PropertySet {
 	private $properties;
 	
 	public function __construct(){

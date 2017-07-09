@@ -1,10 +1,11 @@
 <?php
+namespace csslib;
 
-class CSSGroup {
-	private $rulesets;
+class Group {
+	private $children;
 	
 	public function __construct(){
-		$this->rulesets	= array();
+		$this->children	= array();
 	}
 	
 	/**
@@ -14,17 +15,17 @@ class CSSGroup {
 	public function createRuleSet($selectors){
 		$ruleset = new CSSRuleSet($selectors);
 		// TODO index should be determanted by the document.
-		$ruleset->setIndex(count($this->rulesets));
-		$this->rulesets[] = $ruleset;
+		$ruleset->setIndex(count($this->children));
+		$this->children[] = $ruleset;
 		return $ruleset;
 	}
 	
 	/**
 	 * 
-	 * @return array<CSSRuleSet>
+	 * @return RuleSet[]
 	 */
-	public function getRuleSets(){
-		return $this->rulesets;
+	public function getChildren(){
+		return $this->children;
 	}
 	
 }
