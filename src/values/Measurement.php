@@ -1,6 +1,13 @@
 <?php
+namespace csslib\values;
 
-class CSSMeasurement extends CSSValue {
+/**
+ * Represents a numerical value scaled by a given unit
+ * @author 10usb
+ */
+class Measurement extends Value {
+	const PATTERN = '/^(\d+(\.\d+)?)(\%|in|cm|mm|em|pt|pc|px)?$/is';
+	
 	/**
 	 * 
 	 * @var number
@@ -18,7 +25,7 @@ class CSSMeasurement extends CSSValue {
 	 * @see CSSValue::init()
 	 */
 	protected function init(){
-		if(!preg_match('/^(\d+(\.\d+)?)(\%|in|cm|mm|em|pt|pc|px)$/is', $this->value, $matches)) throw new Exception("Invalid string '$this->value'");
+		if(!preg_match(self::PATTERN, $this->value, $matches)) throw new \Exception("Invalid string '$this->value'");
 		$this->number	= $matches[1];
 		$this->unit		= $matches[3];
 	}
@@ -29,7 +36,7 @@ class CSSMeasurement extends CSSValue {
 	 */
 	public function getMeasurement($unit, $value = null, $throw = true){
 		if($this->unit=='%'){
-			$value = $value instanceof CSSMeasurement ? $value : new CSSMeasurement($value);
+			$value = $value instanceof Measurement ? $value : new Measurement($value);
 			return self::convert($value->number, $value->unit, $unit) * $this->number / 100;
 		}
 		return self::convert($this->number, $this->unit, $unit);

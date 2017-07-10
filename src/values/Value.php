@@ -1,6 +1,11 @@
 <?php
+namespace csslib\values;
 
-class CSSValue {
+/**
+ * Base class for al values in css 
+ * @author 10usb
+ */
+abstract class Value {
 	/**
 	 * 
 	 * @var string
@@ -9,17 +14,17 @@ class CSSValue {
 	
 	/**
 	 * 
-	 * @param string $value
+	 * @param unknown $value
 	 * @throws Exception
-	 * @return CSSValue
+	 * @return \csslib\values\Value
 	 */
 	public static function parse($value){
-		if(preg_match('/^([a-z\-]+)$/is', $value)) return new CSSName($value);
-		if(preg_match('/^"(([^"]\\"|[^"])+)"|\'(([^\']\\\'|[^\'])+)\'$/is', $value)) return new CSSString($value);
-		if(preg_match('/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is', $value)) return new CSSColor($value);
-		if(preg_match('/^(\d+(\.\d+)?)(\%|in|cm|mm|em|pt|pc|px)$/is', $value)) return new CSSMeasurement($value);
+		if(preg_match(Name::PATTERN, $value)) return new Name($value);
+		if(preg_match(Text::PATTERN, $value)) return new Text($value);
+		if(preg_match(Color::PATTERN, $value)) return new Color($value);
+		if(preg_match(Measurement::PATTERN, $value)) return new Measurement($value);
 		
-		throw new Exception("Invalid Value '$value'");
+		throw new \Exception("Invalid Value '$value'");
 	}
 	
 	/**
@@ -45,7 +50,7 @@ class CSSValue {
 	 * @return boolean
 	 */
 	public function getMeasurement($unit, $value = null, $throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
@@ -56,7 +61,7 @@ class CSSValue {
 	 * @return boolean
 	 */
 	public function getName($throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
@@ -75,7 +80,7 @@ class CSSValue {
 	 * @return boolean
 	 */
 	public function getRed($throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 	}
 	
 	/**
@@ -85,7 +90,7 @@ class CSSValue {
 	 * @return boolean
 	 */
 	public function getGreen($throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
@@ -96,7 +101,7 @@ class CSSValue {
 	 * @return boolean
 	 */
 	public function getBlue($throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 		return false;
 	}
 
@@ -106,8 +111,8 @@ class CSSValue {
 	 * @throws Exception
 	 * @return boolean
 	 */
-	public function getString($throw = true){
-		if($throw) throw new Exception("Invalid Value '$this->value'");
+	public function getText($throw = true){
+		if($throw) throw new \Exception("Invalid Value '$this->value'");
 		return false;
 	}
 

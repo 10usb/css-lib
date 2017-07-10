@@ -6,6 +6,11 @@ namespace csslib;
  * @author 10usb
  */
 class Selector {
+	const T_DESCENDANT			= false;
+	const T_CHILD				= '>';
+	const T_ADJACENT_SIBLING	= '+';
+	const T_GENETAL_SIBLING		= '~';
+	
 	/**
 	 * 
 	 * @var \csslib\Selector
@@ -19,16 +24,22 @@ class Selector {
 	private $type;
 	
 	/**
-	 * 
+	 *
 	 * @var string
 	 */
-	private $identification;
+	private $tagName;
+	
+	/**
+	 *
+	 * @var Attribute[]
+	 */
+	private $attributes;
 	
 	/**
 	 * 
 	 * @var string
 	 */
-	private $tagName;
+	private $identification;
 	
 	/**
 	 * 
@@ -38,7 +49,7 @@ class Selector {
 	
 	/**
 	 * 
-	 * @var string[]
+	 * @var Pseudo[]
 	 */
 	private $pseudos;
 	
@@ -56,12 +67,13 @@ class Selector {
 	 * @param string[] $classes
 	 * @param string[] $pseudos
 	 */
-	public function __construct($parent = null, $type = false, $id = false, $tagName = false, $classes = false, $pseudos = false){
+	private function __construct($parent = null, $type = self::T_DESCENDANT, $id = false, $tagName = false, $classes = false, $attributes = false, $pseudos = false){
 		$this->parent			= $parent;
 		$this->type				= $type;
 		$this->identification	= $identification;
 		$this->tagName			= $tagName;
 		$this->classes			= $classes ? $classes : [];
+		$this->attributes		= $attributes? $attributes: [];
 		$this->pseudos			= $pseudos ? $pseudos : [];
 		$this->selector			= null;
 	}
@@ -82,7 +94,7 @@ class Selector {
 	 * @return \csslib\Selector
 	 */
 	public function setIdentification($identification){
-		$this->identification= $identification;
+		$this->identification = $identification;
 		return $this;
 	}
 	
@@ -93,6 +105,17 @@ class Selector {
 	 */
 	public function addClass($name){
 		$this->classes[] = $name;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @param string $name
+	 * @param mixed $argument
+	 * @return \csslib\Selector
+	 */
+	public function addAttribute($key, $value, $type = Attribute::T_DEFAULT){
+		$this->attributes[] = new Attribute($key, $value, $type);
 		return $this;
 	}
 	
@@ -206,6 +229,9 @@ class Selector {
 		}else{
 			if($this->tagName){
 				$css.= $this->tagName;
+			}
+			if($this->attributes){
+				$css.= implode('', $this->attributes);
 			}
 			if($this->identification){
 				$css.= '#'.$this->identification;

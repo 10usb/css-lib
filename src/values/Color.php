@@ -1,6 +1,9 @@
 <?php
+namespace csslib\values;
 
-class CSSColor extends CSSValue {
+class Color extends Value {
+	const PATTERN = '/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is';
+	
 	/**
 	 * 
 	 * @var number
@@ -21,7 +24,7 @@ class CSSColor extends CSSValue {
 			$this->green	= hexdec($matches[2].$matches[2]);
 			$this->blue		= hexdec($matches[2].$matches[2]);
 		}else{
-			throw new Exception("Invalid color value '$this->value'");
+			throw new \Exception("Invalid color value '$this->value'");
 		}
 	}
 	
