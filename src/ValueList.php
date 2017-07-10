@@ -9,10 +9,10 @@ class ValueList {
 	 * @param string $values
 	 */
 	public function __construct($value){
-		if(!preg_match_all('/(\s(".+?"|[^" ,]+))/is', " $value ", $matches, PREG_SET_ORDER)) throw new Exception("Invalid property '$value'");
+		if(!preg_match_all('/(\s(".+?"|[^" ,]+))/is', " $value ", $matches, PREG_SET_ORDER)) throw new \Exception("Invalid property '$value'");
 		$this->values = array();
 		foreach($matches as $match){
-			$this->values[] = CSSValue::parse($match[2]);
+			$this->values[] = Value::parse($match[2]);
 		}
 	}
 	

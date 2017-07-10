@@ -1,6 +1,11 @@
 <?php
 namespace csslib\values;
 
+/**
+ * Represents a hex color value
+ * @author 10usb
+ */
+
 class Color extends Value {
 	const PATTERN = '/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is';
 	

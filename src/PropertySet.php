@@ -1,11 +1,19 @@
 <?php
 namespace csslib;
 
+/**
+ * Base class for any block type that has properties
+ * @author 10usb
+ */
 class PropertySet {
+	/**
+	 * 
+	 * @var Property[]
+	 */
 	private $properties;
 	
 	public function __construct(){
-		$this->properties	= array();
+		$this->properties	= [];
 	}
 	
 	/**
@@ -14,26 +22,38 @@ class PropertySet {
 	 * @param string $value
 	 */
 	public function setProperty($key, $value){
-		if($value instanceof CSSProperty){
-			$this->properties[$key] = $value;
-		}else{
-			$this->properties[$key] = new CSSProperty($value);
+		if(!$value instanceof Property){
+			$value = new Property($key, $value);
 		}
+		
+		foreach($this->properties as $index=>$property){
+			if($value->getName()==$key){
+				$this->properties[$index] = $property;
+				return $this;
+			}
+		}
+		
+		$this->properties[] = $property;
+		return $this;
 	}
 	
 	/**
 	 * 
 	 * @param string $key
-	 * @return CSSProperty
+	 * @return \csslib\Property|boolean
 	 */
 	public function getProperty($key){
-		if(isset($this->properties[$key])) return $this->properties[$key];
+		foreach($this->properties as $property){
+			if($value->getName()==$key){
+				return $property;
+			}
+		}
 		return false;
 	}
 	
 	/**
 	 * 
-	 * @return array<string>
+	 * @return \csslib\Property[]
 	 */
 	public function getProperties(){
 		return $this->properties;
