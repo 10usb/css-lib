@@ -23,11 +23,11 @@ class Color extends Value {
 		if(preg_match('/^\#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/is', strtolower($this->value), $matches)){
 			$this->red		= hexdec($matches[1]);
 			$this->green	= hexdec($matches[2]);
-			$this->blue		= hexdec($matches[2]);
+			$this->blue		= hexdec($matches[3]);
 		}elseif(preg_match('/^\#([0-9a-f])([0-9a-f])([0-9a-f])$/is', strtolower($this->value), $matches)){
 			$this->red		= hexdec($matches[1].$matches[1]);
 			$this->green	= hexdec($matches[2].$matches[2]);
-			$this->blue		= hexdec($matches[2].$matches[2]);
+			$this->blue		= hexdec($matches[3].$matches[3]);
 		}else{
 			throw new \Exception("Invalid color value '$this->value'");
 		}

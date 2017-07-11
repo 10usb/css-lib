@@ -27,13 +27,13 @@ class PropertySet {
 		}
 		
 		foreach($this->properties as $index=>$property){
-			if($value->getName()==$key){
-				$this->properties[$index] = $property;
+			if($property->getName() == $key){
+				$this->properties[$index] = $value;
 				return $this;
 			}
 		}
 		
-		$this->properties[] = $property;
+		$this->properties[] = $value;
 		return $this;
 	}
 	
@@ -67,7 +67,7 @@ class PropertySet {
 	public function __toString(){
 		$css = " {\n";
 		foreach($this->properties as $key=>$value){
-			$css.= "  $key: $value;\n";
+			$css.= "  $value\n";
 		}
 		$css.= "}\n";
 		return $css;

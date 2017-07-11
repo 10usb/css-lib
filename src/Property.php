@@ -49,6 +49,6 @@ class Property {
 	 * @return string
 	 */
 	public function __toString(){
-		return implode(', ', $this->values);
+		return $this->name.': '.implode(', ', $this->values).';';
 	}
 }
