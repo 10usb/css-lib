@@ -28,6 +28,24 @@ class Document {
 	}
 	
 	/**
+	 * Adds a new segment 
+	 * @param string|\csslib\Segment $segment
+	 * @param \csslib\Segment $other
+	 * @return \csslib\Segment
+	 */
+	public function addSegment($segment, $other = null){
+		if(!$segment instanceof Segment){
+			$segment = new Segment($segment);
+		}
+		if($other){
+			throw new \Exception('Inserting before not supported');
+		}else{
+			$this->segments[] = $segment;
+		}
+		return $segment;
+	}
+	
+	/**
 	 * Returns the segment with the given namen otherwise false
 	 * @param string $name
 	 * @return \csslib\Segment|boolean
