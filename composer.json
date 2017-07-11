@@ -6,6 +6,6 @@
 		"php": ">=7.0"
 	},
 	"autoload": {
-		"psr-4": { "CSSLib\\": "src/" }
+		"psr-4": { "csslib\\": "src/" }
 	}
 }
