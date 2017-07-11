@@ -1,7 +1,13 @@
 <?php
 namespace csslib;
 
+use csslib\values\Value;
+
 class ValueList {
+	/**
+	 * 
+	 * @var \csslib\values\Value[]
+	 */
 	private $values;
 	
 	/**

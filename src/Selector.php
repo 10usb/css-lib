@@ -151,69 +151,6 @@ class Selector {
 		if($this->parent) return $this->parent->get();
 		return $this;
 	}
-	
-	/**
-	 * 
-	 * @param CSSSelector $path
-	 * @deprecated should be located in a query class or something
-	 */
-	public function match($path){
-		$current = $path;
-
-		if($this->type=='>'){
-			if(!$this->matches($path)) return false;
-			
-			if($path->selector==null){
-				return $this->selector==null;
-			}
-			if($this->selector==null) return false;
-			
-			return $this->selector->match($path->selector);
-		}
-		
-		$match = false;
-		while($current!=null){
-			if($this->matches($current)){
-				$match = true;
-				break;
-			}
-			$current = $current->selector;
-		}
-		if($current==null) return false;
-		
-		if($current->selector==null){
-			return $this->selector==null;
-		}
-		if($this->selector==null) return false;
-
-		return $this->selector->match($current->selector);
-	}
-	
-	/**
-	 * 
-	 * @param CSSSelector $other
-	 * @deprecated should be located in a query class or something
-	 */
-	public function matches($other){
-		if($this->tagName && $this->tagName!=$other->tagName) return false;
-		if($this->classes && count(array_intersect($this->classes, $other->classes))!=count($this->classes)) return false;
-		if($this->pseudos && count(array_intersect($this->pseudos, $other->pseudos))!=count($this->pseudos)) return false;
-		return true;
-	}
-	
-	/**
-	 * 
-	 * @param Specificity $specificity
-	 */
-	public function getSpecificity($specificity){
-		if($this->identification)	$specificity->a++;
-		if($this->classes)			$specificity->b+=count($this->classes);
-		if($this->tagName)			$specificity->c++;
-		if($this->pseudos)			$specificity->c+=count($this->pseudos);
-		
-		if($this->selector!=null) return $this->selector->getSpecificity($specificity);
-		return $specificity;
-	}
 
 	/**
 	 * Returns the CSS
