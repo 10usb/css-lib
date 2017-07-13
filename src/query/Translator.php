@@ -1,6 +1,11 @@
 <?php
+namespace csslib\query;
 
-abstract class CSSTranslator {
+/**
+ * 
+ * @author 10usb
+ */
+interface Translator {
 	/**
 	 * 
 	 * @param string $key
@@ -8,14 +13,14 @@ abstract class CSSTranslator {
 	 * @param CSSRuleSet $ruleset
 	 * @return mixed
 	 */
-	public abstract function translate($key, $value, $ruleset);
+	public function translate($key, $value, $ruleset);
 	/**
 	 * 
 	 * @param CSSRuleSet $ruleset
 	 * @param string $key
 	 * @return mixed
 	 */
-	public abstract function getValue($ruleset, $key);
+	public function getValue($ruleset, $key);
 	
 	/**
 	 * 
@@ -23,5 +28,5 @@ abstract class CSSTranslator {
 	 * @param string $key
 	 * @return boolean
 	 */
-	public abstract function inherits($value, $key);
+	public function inherits($value, $key);
 }

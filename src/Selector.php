@@ -90,6 +90,14 @@ class Selector {
 	
 	/**
 	 * 
+	 * @return string
+	 */
+	public function getTagName(){
+		return $this->tagName;
+	}
+	
+	/**
+	 * 
 	 * @param string $identification
 	 * @return \csslib\Selector
 	 */
@@ -100,12 +108,28 @@ class Selector {
 	
 	/**
 	 * 
+	 * @return string
+	 */
+	public function getIdentification(){
+		return $this->identification;
+	}
+	
+	/**
+	 * 
 	 * @param string $name
 	 * @return \csslib\Selector
 	 */
 	public function addClass($name){
 		$this->classes[] = $name;
 		return $this;
+	}
+	
+	/**
+	 * 
+	 * @return string[]
+	 */
+	public function getClasses(){
+		return $this->classes;
 	}
 	
 	/**
@@ -121,6 +145,14 @@ class Selector {
 	
 	/**
 	 * 
+	 * @return \csslib\Attribute[]
+	 */
+	public function getAttributes(){
+		return $this->attributes;
+	}
+	
+	/**
+	 * 
 	 * @param string $name
 	 * @param mixed $argument
 	 * @return \csslib\Selector
@@ -128,6 +160,14 @@ class Selector {
 	public function addPseudo($name, $argument = false){
 		$this->pseudos[] = new Pseudo($name, $argument);
 		return $this;
+	}
+	
+	/**
+	 * 
+	 * @return \csslib\Pseudo[]
+	 */
+	public function getPseudos(){
+		return $this->pseudos;
 	}
 	
 	/**
@@ -145,11 +185,50 @@ class Selector {
 	
 	/**
 	 * 
+	 * @param \csslib\Selector $selector
+	 * @param string $type
+	 */
+	public function append($selector, $type){
+		$this->selector			= clone $selector;
+		$this->selector->parent	= $this;
+		$this->selector->type	= $type;
+		
+		return $this->selector;
+	}
+	
+	/**
+	 * Returns the next element in this selector chain
+	 * @return \csslib\Selector
+	 */
+	public function hasNext(){
+		return !!$this->selector;
+	}
+	
+	/**
+	 * Returns the next element in this selector chain
+	 * @return \csslib\Selector
+	 */
+	public function getNext(){
+		return $this->selector;
+	}
+	
+	/**
+	 * 
 	 * @return \csslib\Selector
 	 */
 	public function get(){
 		if($this->parent) return $this->parent->get();
 		return $this;
+	}
+	
+	/**
+	 * Makes a clone of it self
+	 */
+	public function __clone() {
+		if($this->selector){
+			$this->selector = clone $this->selector;
+			$this->selector->parent = $this;
+		}
 	}
 
 	/**
