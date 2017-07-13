@@ -7,11 +7,7 @@ use csslib\Selector;
  * Parses a ruleset
  * @author 10usb
  */
-class RuleSet {
-	/**
-	 * @var \csslib\parsers\Parser
-	 */
-	private $parser;
+class RuleSet extends PropertySet {
 	
 	/**
 	 * @var \csslib\Group
@@ -24,7 +20,7 @@ class RuleSet {
 	 * @param \csslib\Group $parent
 	 */
 	public function __construct($parser, $parent){
-		$this->parser = $parser;
+		parent::__construct($parser);
 		$this->parent = $parent;
 	}
 	
@@ -37,7 +33,7 @@ class RuleSet {
 		
 		$selectors = array();
 		foreach(explode(',', $matches[1]) as $selector){
-			$selectors[] = $this->parseSelector(trim($selector));
+			$selectors[] = self::parseSelector(trim($selector));
 		}
 		
 		$ruleSet = new \csslib\RuleSet($selectors);
@@ -45,13 +41,16 @@ class RuleSet {
 		$ruleSet->setProperty('color', '#ff8000');
 		$this->parent->add($ruleSet);
 		
-		//$ruleset = $this->parent->createRuleSet($selectors);
-
-		//$state = new CSSPropertySetParser($this->parser, $ruleset);
-		//$state->parse();
+		$this->setPropertySet($ruleSet);
+		parent::parse();
 	}
 	
-	public function parseSelector($text){
+	/**
+	 * 
+	 * @param string $text
+	 * @return \csslib\Selector
+	 */
+	public static function parseSelector($text){
 		$text = preg_replace('/(\>)\s+/is', '>', $text);
 		
 		$selector	= null;
