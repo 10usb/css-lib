@@ -22,19 +22,15 @@ try {
 
 $path = new Path($document, null);
 $path->push()->setTagName('p')->addClass('special');
-$path->push()->addClass('strong');
+$path->push()->setTagName('strong');
 $path->pop();
-$path->push()->addClass('strong');
-$path->push()->addClass('span');
-$path->pop();
-$path->pop();
-$path->push()->addClass('strong');
-$path->push()->addClass('span');
-$path->push()->addClass('a');
-$path->pop();
-$path->push()->addClass('a');
+$path->push()->setTagName('strong');
 
 echo "$path\n";
+echo "\n------------------\n";
+
+$propertySet = $path->get();
+echo $propertySet;
 
 
 

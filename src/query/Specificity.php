@@ -52,4 +52,8 @@ class Specificity {
 		
 		return $specificity;
 	}
+	
+	public function __toString(){
+		return sprintf('%d-%d-%d-%d', $this->a, $this->b, $this->c, $this->i);
+	}
 }

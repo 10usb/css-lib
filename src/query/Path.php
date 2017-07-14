@@ -2,13 +2,14 @@
 namespace csslib\query;
 
 use csslib\Selector;
+use csslib\PropertySet;
 
 class Path {
 	/**
 	 * 
 	 * @var \csslib\Document
 	 */
-	private $documment;
+	private $document;
 	
 	/**
 	 * 
@@ -66,6 +67,63 @@ class Path {
 		$this->depth--;
 	}
 	
+	/**
+	 * 
+	 * @return \csslib\PropertySet
+	 */
+	public function get(){
+		$matches = [];
+		$walker = new Walker($this->document, $this->translator);
+		foreach($walker as $index=>$ruleSet){
+			$this->match($matches, $ruleSet, $index);
+		}
+		
+		usort($matches, function($a, $b){
+			return Specificity::compare($a[0], $b[0]);
+		});
+		
+		$propertySet = new PropertySet();
+		foreach ($matches as $match){
+			foreach($match[1]->getProperties() as $property){
+				$propertySet->setProperty($property);
+			}
+		}
+		return $propertySet;
+	}
+	
+	/**
+	 * 
+	 * @param array $matches
+	 * @param \csslib\RuleSet $ruleSet
+	 * @param integer $index
+	 * @return boolean
+	 */
+	private function match(&$matches, $ruleSet, $index){
+		$specificities = [];
+		foreach($ruleSet->getSelectors() as $selector){
+			if($this->isMatch($selector)){
+				$specificities[] = Specificity::get($selector);
+			}
+		}
+		
+		if(!$specificities) return false;
+		
+		usort($specificities, [Specificity::class, 'compare']);
+		$specificity = end($specificities);
+		$specificity->setIndex($index);
+		
+		$matches[] = [$specificity, $ruleSet];
+		return true;
+	}
+	
+	/**
+	 * TODO make this function real ^^
+	 * @param \csslib\Selector $selector
+	 * @return boolean
+	 */
+	public function isMatch($selector){
+		return rand(0, 2)==0;
+	}
 
 	/**
 	 * Returns the CSS
