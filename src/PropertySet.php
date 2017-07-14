@@ -21,15 +21,17 @@ class PropertySet {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setProperty($key, $value){
-		if(!$value instanceof Property){
-			$value = new Property($key, $value);
+	public function setProperty($key, $value = null){
+		if($key instanceof Property){
+			$value	= $key;
+			$key	= $key->getName();
+		}elseif(!$value instanceof Property){
+			$value	= new Property($key, $value);
 		}
 		
 		foreach($this->properties as $index=>$property){
 			if($property->getName() == $key){
-				$this->properties[$index] = $value;
-				return $this;
+				unset($this->properties[$index]);
 			}
 		}
 		
