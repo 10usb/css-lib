@@ -3,6 +3,7 @@ namespace csslib\query;
 
 use csslib\Selector;
 use csslib\PropertySet;
+use csslib\formatters\Pretty;
 
 class Path {
 	/**
@@ -88,6 +89,9 @@ class Path {
 				$propertySet->setProperty($property);
 			}
 		}
+		
+		// TODO Let the translator normalize the propertySet
+		
 		return $propertySet;
 	}
 	
@@ -122,7 +126,71 @@ class Path {
 	 * @return boolean
 	 */
 	public function isMatch($selector){
-		return rand(0, 2)==0;
+		return $this->isMatchingTail($selector->getEnd(), $this->depth - 1, count($this->stack[$this->depth - 1]) - 1);
+	}
+	
+	/**
+	 * 
+	 * @param csslib\Selector $selector
+	 * @param integer $depth
+	 * @param integer $offset
+	 * @return boolean
+	 */
+	private function isMatchingTail($selector, $depth, $offset){
+		$target = $this->stack[$depth][$offset];
+		
+		if($selector->getTagName() && $target->getTagName()!=$selector->getTagName()) return false;
+		if($selector->getIdentification() && $target->getIdentification()!=$selector->getIdentification()) return false;
+		if($selector->getPseudos()){
+			foreach($selector->getPseudos() as $pseudo){
+				$has = false;
+				foreach($target->getPseudos() as $other){
+					if("$pseudo" == "$other") $has = true;
+				}
+				if(!$has) return false;
+			}
+		}
+		if($selector->getClasses()){
+			if(count(array_intersect($selector->getClasses(), $target->getClasses())) != count($selector->getClasses())) return false;
+		}
+		
+		switch($selector->getType()){
+			case Selector::T_CHILD:
+				// Is parent matching
+				if(!$selector->getParent() || $depth <= 0) throw new \Exception('No parent when type expects parent');
+				if($this->isMatchingTail($selector->getParent(), $depth - 1, count($this->stack[$depth - 1]) - 1)){
+					return true;
+				}
+			break;
+			case Selector::T_DESCENDANT:
+				// Find any matching ascendant if any
+				if(!$selector->getParent() || $depth <= 0) return true;
+				for($index = $depth - 1; $index >= 0; $index--){
+					if($this->isMatchingTail($selector->getParent(), $index, count($this->stack[$index]) - 1)){
+						return true;
+					}
+				}
+			break;
+			case Selector::T_ADJACENT_SIBLING:
+				// Is preceding sibling matching
+				if(!$selector->getParent() && $offset <= 0) throw new \Exception('No sibling parent when type expects sibling parent');
+				if($this->isMatchingTail($selector->getParent(), $depth, $offset - 1)){
+					return true;
+				}
+			break;
+			case Selector::T_GENERAL_SIBLING:
+				// Is any preceding sibling matching
+				if(!$selector->getParent() && $offset <= 0) throw new \Exception('No sibling parent when type expects sibling parent');
+				for($index = $offset - 1; $index >= 0; $index--){
+					if($this->isMatchingTail($selector->getParent(), $depth, $index)){
+						return true;
+					}
+				}
+			break;
+			default: throw new \Exception('Unknown selector type');
+		}
+		
+		return false;
 	}
 
 	/**
@@ -150,6 +218,6 @@ class Path {
 		}
 		
 		
-		return $selector->get()->__toString();
+		return Pretty::selector($selector->get());
 	}
 }

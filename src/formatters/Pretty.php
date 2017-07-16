@@ -18,4 +18,40 @@ class Pretty implements Formatter {
 		}
 		return $css;
 	}
+	
+	/**
+	 * 
+	 * @param \csslib\Selector $selector
+	 * @param boolean $child
+	 * @return string
+	 */
+	public static function selector($selector, $child = true){
+		$css = '';
+		if($selector->getType()){
+			$css.= $selector->getType().' ';
+		}
+		if(!$selector->getTagName()&& !$selector->getIdentification() && !$selector->getClasses() && !$selector->getPseudos()){
+			$css.= '*';
+		}else{
+			if($selector->getTagName()){
+				$css.= $selector->getTagName();
+			}
+			if($selector->getAttributes()){
+				$css.= implode('', $selector->getAttributes());
+			}
+			if($selector->getIdentification()){
+				$css.= '#'.$selector->getIdentification();
+			}
+			if($selector->getClasses()){
+				$css.= '.'.implode('.', $selector->getClasses());
+			}
+			if($selector->getPseudos()){
+				$css.= ':'.implode(':', $selector->getPseudos());
+			}
+			if($child && $selector->getNext()){
+				$css.= ' '.self::selector($selector->getNext(), true);
+			}
+		}
+		return $css;
+	}
 }

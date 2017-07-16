@@ -1,6 +1,8 @@
 <?php
 namespace csslib;
 
+use csslib\formatters\Pretty;
+
 /**
  * Represent a single selector of a ruleset
  * @author 10usb
@@ -9,7 +11,7 @@ class Selector {
 	const T_DESCENDANT			= false;
 	const T_CHILD				= '>';
 	const T_ADJACENT_SIBLING	= '+';
-	const T_GENETAL_SIBLING		= '~';
+	const T_GENERAL_SIBLING		= '~';
 	
 	/**
 	 * 
@@ -76,6 +78,14 @@ class Selector {
 		$this->attributes		= $attributes? $attributes: [];
 		$this->pseudos			= $pseudos ? $pseudos : [];
 		$this->selector			= null;
+	}
+	
+	/**
+	 * Returns the type of this selector
+	 * @return string
+	 */
+	public function getType(){
+		return $this->type;
 	}
 	
 	/**
@@ -213,12 +223,29 @@ class Selector {
 	}
 	
 	/**
-	 * 
+	 * Returns the last selector in the chain
+	 * @return \csslib\Selector
+	 */
+	public function getEnd(){
+		if($this->selector) return $this->selector->getEnd();
+		return $this;
+	}
+	
+	/**
+	 * Returns the first selector in the chain
 	 * @return \csslib\Selector
 	 */
 	public function get(){
 		if($this->parent) return $this->parent->get();
 		return $this;
+	}
+	
+	/**
+	 * Returns the parent of this selector part
+	 * @return \csslib\Selector
+	 */
+	public function getParent(){
+		return $this->parent;
 	}
 	
 	/**
@@ -230,39 +257,13 @@ class Selector {
 			$this->selector->parent = $this;
 		}
 	}
-
+	
 	/**
 	 * Returns the CSS
 	 * @return string
 	 */
 	public function __toString(){
-		$css = '';
-		if($this->type){
-			$css.= $this->type.' ';
-		}
-		if(!$this->tagName && !$this->identification && !$this->classes && !$this->pseudos){
-			$css.= '*';
-		}else{
-			if($this->tagName){
-				$css.= $this->tagName;
-			}
-			if($this->attributes){
-				$css.= implode('', $this->attributes);
-			}
-			if($this->identification){
-				$css.= '#'.$this->identification;
-			}
-			if($this->classes){
-				$css.= '.'.implode('.', $this->classes);
-			}
-			if($this->pseudos){
-				$css.= ':'.implode(':', $this->pseudos);
-			}
-			if($this->selector){
-				$css.= ' '.$this->selector;
-			}
-		}
-		return $css;
+		return Pretty::selector($this);
 	}
 	
 	/**
