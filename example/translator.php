@@ -1,48 +1,70 @@
 <?php
-class ExampleTranslator extends CSSTranslator {
+use csslib\query\Translator;
+
+class ExampleTranslator implements Translator {
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSTranslator::getValue()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\query\Translator::getValue()
 	 */
-	public  function translate($key, $value, $ruleset){
-		switch($key){
-			case 'page-margin':
-				if($value->getValueList(0)->getCount()==4){
-					$ruleset->setProperty('page-margin-top', $value->getValueList(0)->getValue(0));
-					$ruleset->setProperty('page-margin-right', $value->getValueList(0)->getValue(1));
-					$ruleset->setProperty('page-margin-bottom', $value->getValueList(0)->getValue(2));
-					$ruleset->setProperty('page-margin-left', $value->getValueList(0)->getValue(3));
+	public function getValue($chain, $document, $key){
+		$property = $chain->getProperty($key);
+		$value = null;
+		
+		if($property) switch($key){
+			case 'color':
+				$value = $property->getValueList(0)->getValue(0);
+				if($value=='inherit') $value = $this->getValue($chain->getParent(), $document, $key);
+			break;
+			default: throw new Exception("Unknow property '$key'");
+		}else switch($key){
+			case 'page-margin-top':
+				$property = $chain->getProperty('page-margin');
+				if($property){
+					if($property->getValueList(0)->getCount()==4){
+						$value = $property->getValueList(0)->getValue(0);
+					}elseif($value->getValueList(0)->getCount()==2){
+						$value = $property->getValueList(0)->getValue(0);
+					}
+					if($value=='inherit') $value = $this->getValue($chain->getParent(), $document, $key);
 				}
 			break;
-			default: $ruleset->setProperty($key, $value); break;
+			case 'page-margin-right':
+				$property = $chain->getProperty('page-margin');
+				if($property){
+					if($property->getValueList(0)->getCount()==4){
+						$value = $property->getValueList(0)->getValue(1);
+					}elseif($value->getValueList(0)->getCount()==2){
+						$value = $property->getValueList(0)->getValue(1);
+					}
+					if($value=='inherit') $value = $this->getValue($chain->getParent(), $document, $key);
+				}
+			break;
+			case 'page-margin-bottom':
+				$property = $chain->getProperty('page-margin');
+				if($property){
+					if($property->getValueList(0)->getCount()==4){
+						$value = $property->getValueList(0)->getValue(2);
+					}elseif($value->getValueList(0)->getCount()==2){
+						$value = $property->getValueList(0)->getValue(0);
+					}
+					if($value=='inherit') $value = $this->getValue($chain->getParent(), $document, $key);
+				}
+			break;
+			case 'page-margin-left':
+				$property = $chain->getProperty('page-margin');
+				if($property){
+					if($property->getValueList(0)->getCount()==4){
+						$value = $property->getValueList(0)->getValue(3);
+					}elseif($value->getValueList(0)->getCount()==2){
+						$value = $property->getValueList(0)->getValue(1);
+					}
+					if($value=='inherit') $value = $this->getValue($chain->getParent(), $document, $key);
+				}
+			break;
+			default: throw new Exception("Unknow property '$key'");
 		}
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see CSSTranslator::getValue()
-	 */
-	public function getValue($ruleset, $key){
-		$property = $ruleset->getProperty($key);
-		if($property){
-			switch($key){
-				case 'color': return $property->getValueList(0)->getValue(0);
-				case 'page-margin-top': return $property->getValueList(0)->getValue(0)->getMeasurement('pt');
-				case 'page-margin-right': return $property->getValueList(0)->getValue(0)->getMeasurement('pt');
-				case 'page-margin-bottom': return $property->getValueList(0)->getValue(0)->getMeasurement('pt');
-				case 'page-margin-left': return $property->getValueList(0)->getValue(0)->getMeasurement('pt');
-			}
-			throw new Exception("Unknow property '$key'");
-		}
-		return null;
-	}
-	
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see CSSTranslator::inherits()
-	 */
-	public function inherits($value, $key){
-		return false;
+		
+		return $value;
 	}
 }

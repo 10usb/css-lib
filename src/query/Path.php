@@ -59,11 +59,24 @@ class Path {
 	
 	/**
 	 * 
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getValue($key){
+		$this->loadCurrent();
+		
+		return $this->translator->getValue($this->current, $this->document, $key);
+	}
+	
+	/**
+	 * 
 	 * @return \csslib\Selector
 	 */
 	public function push(){
 		if($this->depth > 0){
-			$this->getPropertySet();
+			// Make sure the parent is loaded before creating a new one
+			$this->loadCurrent();
+			// Now set loaded back to false as the new one isn't
 			$this->loaded = false;
 		}
 		
@@ -93,7 +106,7 @@ class Path {
 	/**
 	 * 
 	 */
-	private function getPropertySet(){
+	private function loadCurrent(){
 		if(!$this->loaded){
 			$matches = [];
 			$walker = new Walker($this->document, $this->translator);
@@ -111,9 +124,10 @@ class Path {
 					$propertySet->setProperty($property);
 				}
 			}
-			$this->current = $propertySet;
+			
+			$this->current	= $propertySet;
+			$this->loaded	= true;
 		}
-		return $this->current;
 	}
 	
 	/**

@@ -5,7 +5,7 @@
 */
 
 section {
-	page-margin: 30pt 30pt 30pt 30pt;
+	page-margin: 30pt 31pt 32pt 33pt;
 }
 
 h1 {
@@ -18,6 +18,9 @@ p {
 	display: block;
 	margin: 10pt 0pt;
 }
+span {
+	color: #00f;
+}
 strong {
 	font-weight: bold;
 }
@@ -25,7 +28,7 @@ strong:hover {
 	text-decoration: underline;
 }
 p.special > span strong {
-	color: #00f;
+	color: inherit;
 }
 p.special strong {
 	color: #fff;

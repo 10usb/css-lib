@@ -46,7 +46,7 @@ class PropertySet {
 	 */
 	public function getProperty($key){
 		foreach($this->properties as $property){
-			if($value->getName()==$key){
+			if($property->getName()==$key){
 				return $property;
 			}
 		}
