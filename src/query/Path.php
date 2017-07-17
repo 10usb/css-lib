@@ -72,7 +72,7 @@ class Path {
 	 * 
 	 * @return \csslib\PropertySet
 	 */
-	public function get(){
+	private function getPropertySet(){
 		$matches = [];
 		$walker = new Walker($this->document, $this->translator);
 		foreach($walker as $index=>$ruleSet){
@@ -89,8 +89,6 @@ class Path {
 				$propertySet->setProperty($property);
 			}
 		}
-		
-		// TODO Let the translator normalize the propertySet
 		
 		return $propertySet;
 	}
