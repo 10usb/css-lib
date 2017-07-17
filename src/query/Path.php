@@ -30,6 +30,18 @@ class Path {
 	 */
 	private $depth;
 	
+	/**
+	 *
+	 * @var \csslib\query\Chain
+	 */
+	private $current;
+	
+	/**
+	 *
+	 * @var boolean
+	 */
+	private $loaded;
+	
 	
 	/**
 	 * 
@@ -41,6 +53,8 @@ class Path {
 		$this->translator	= $translator;
 		$this->depth		= 0;
 		$this->stack		= [];
+		$this->current		= null;
+		$this->loaded		= false;
 	}
 	
 	/**
@@ -48,6 +62,11 @@ class Path {
 	 * @return \csslib\Selector
 	 */
 	public function push(){
+		if($this->depth > 0){
+			$this->getPropertySet();
+			$this->loaded = false;
+		}
+		
 		$selector = Selector::create();
 		
 		if(count($this->stack) > $this->depth){
@@ -66,31 +85,35 @@ class Path {
 	public function pop(){
 		if(count($this->stack) > $this->depth) array_pop($this->stack);
 		$this->depth--;
+		
+		$this->current	= $this->current->getParent();
+		$this->loaded	= $this->current != null;
 	}
 	
 	/**
 	 * 
-	 * @return \csslib\PropertySet
 	 */
 	private function getPropertySet(){
-		$matches = [];
-		$walker = new Walker($this->document, $this->translator);
-		foreach($walker as $index=>$ruleSet){
-			$this->match($matches, $ruleSet, $index);
-		}
-		
-		usort($matches, function($a, $b){
-			return Specificity::compare($a[0], $b[0]);
-		});
-		
-		$propertySet = new PropertySet();
-		foreach ($matches as $match){
-			foreach($match[1]->getProperties() as $property){
-				$propertySet->setProperty($property);
+		if(!$this->loaded){
+			$matches = [];
+			$walker = new Walker($this->document, $this->translator);
+			foreach($walker as $index=>$ruleSet){
+				$this->match($matches, $ruleSet, $index);
 			}
+			
+			usort($matches, function($a, $b){
+				return Specificity::compare($a[0], $b[0]);
+			});
+			
+			$propertySet = new Chain($this->current);
+			foreach ($matches as $match){
+				foreach($match[1]->getProperties() as $property){
+					$propertySet->setProperty($property);
+				}
+			}
+			$this->current = $propertySet;
 		}
-		
-		return $propertySet;
+		return $this->current;
 	}
 	
 	/**
