@@ -1,12 +1,6 @@
 <?php
-use csslib\query\Translator;
 
-class ExampleTranslator implements Translator {
-	/**
-	 * 
-	 * {@inheritDoc}
-	 * @see \csslib\query\Translator::getValue()
-	 */
+class ExampleTranslator implements \csslib\query\Translator {
 	public function getValue($chain, $document, $key){
 		$property = $chain->getProperty($key);
 		$value = null;
