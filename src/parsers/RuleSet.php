@@ -37,8 +37,6 @@ class RuleSet extends PropertySet {
 		}
 		
 		$ruleSet = new \csslib\RuleSet($selectors);
-		$ruleSet->setProperty('font-family', '"Arial Black"');
-		$ruleSet->setProperty('color', '#ff8000');
 		$this->parent->add($ruleSet);
 		
 		$this->setPropertySet($ruleSet);
