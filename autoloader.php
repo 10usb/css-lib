@@ -1,5 +1,5 @@
 <?php
-namespace CSSlib;
+namespace csslib;
 
 /**
  * It likes to load things
@@ -10,12 +10,12 @@ class Autoloader {
 	 * Registeres the autoloader
 	 */
 	public static function register() {
-		spl_autoload_register('CSSlib\\Autoloader::load');
+		spl_autoload_register('csslib\\Autoloader::load');
 	}
 	
 	/**
 	 * Load a class or interface by its name, ain't that cool?
-	 * @param string $name	Class name 
+	 * @param string $name	Class name
 	 * @throws \Exception
 	 * @return boolean
 	 */
@@ -25,7 +25,7 @@ class Autoloader {
 		$filename =  __DIR__.'/src/'.implode('/', array_slice(explode('\\', $name), 1)).'.php';
 		
 		if(!file_exists($filename)) throw new \Exception('File "'.$filename.'" not found');
-
+		
 		require_once $filename;
 		
 		if(class_exists($name) || interface_exists($name)) return true;
