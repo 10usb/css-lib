@@ -37,8 +37,10 @@ class Document {
 		if(!$segment instanceof Segment){
 			$segment = new Segment($segment);
 		}
+		if($this->getIndexOf($segment->getName())) throw new \Exception('Section with this name already exists');
 		if($other){
-			throw new \Exception('Inserting before not supported');
+			if(($index = $this->getIndexOf($other))===false) throw new \Exception('Segment not found');
+			array_splice($this->segments, $index, 0, [$segment]);
 		}else{
 			$this->segments[] = $segment;
 		}
@@ -63,5 +65,27 @@ class Document {
 	 */
 	public function getSegments(){
 		return $this->segments;
+	}
+	
+	/**
+	 * 
+	 * @param string|\csslib\Segment $segment
+	 * @return \csslib\Segment|boolean
+	 */
+	private function getIndexOf($segment){
+		if($segment instanceof Segment){
+			foreach($this->segments as $index=>$other){
+				if($other === $segment){
+					return $index;
+				}
+			}
+		}else{
+			foreach($this->segments as $index=>$other){
+				if($other->getName() === $segment){
+					return $index;
+				}
+			}
+		}
+		return false;
 	}
 }
