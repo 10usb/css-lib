@@ -97,10 +97,13 @@ class Path {
 	 */
 	public function pop(){
 		if(count($this->stack) > $this->depth) array_pop($this->stack);
+		if($this->depth==0) throw new \Exception('Can\' pop nothing');
 		$this->depth--;
 		
-		$this->current	= $this->current->getParent();
-		$this->loaded	= $this->current != null;
+		if($this->current != null){
+			$this->current	= $this->current->getParent();
+			$this->loaded	= $this->current != null;
+		}
 	}
 	
 	/**
