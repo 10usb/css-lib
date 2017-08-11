@@ -64,4 +64,13 @@ class Color extends Value {
 	public function getBlue($throw = true){
 		return $this->blue;
 	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::__toString()
+	 */
+	public function __toString(){
+		return sprintf('#%02X%02X%02X', $this->red, $this->green, $this->blue);
+	}
 }

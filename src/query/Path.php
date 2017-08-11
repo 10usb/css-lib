@@ -70,6 +70,16 @@ class Path {
 	
 	/**
 	 * 
+	 * @return \csslib\query\State
+	 */
+	public function getState(){
+		$this->loadCurrent();
+		
+		return new State($this->document, $this->translator, $this->current);
+	}
+	
+	/**
+	 * 
 	 * @return \csslib\Selector
 	 */
 	public function push(){
