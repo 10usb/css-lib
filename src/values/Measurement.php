@@ -34,7 +34,7 @@ class Measurement extends Value {
 	 * (non-PHPdoc)
 	 * @see CSSValue::getMeasurement()
 	 */
-	public function getMeasurement($unit, $value = null){
+	public function getMeasurement($unit, $value = null, $throw = true){
 		if($this->unit=='%'){
 			$value = $value instanceof Measurement ? $value : new Measurement($value);
 			return self::convert($value->number, $value->unit, $unit) * $this->number / 100;
