@@ -34,7 +34,7 @@ class Measurement extends Value {
 	 * (non-PHPdoc)
 	 * @see CSSValue::getMeasurement()
 	 */
-	public function getMeasurement($unit, $value = null, $throw = true){
+	public function getMeasurement($unit, $value = null){
 		if($this->unit=='%'){
 			$value = $value instanceof Measurement ? $value : new Measurement($value);
 			return self::convert($value->number, $value->unit, $unit) * $this->number / 100;
@@ -101,6 +101,6 @@ class Measurement extends Value {
 			}
 		}
 		
-		throw new Exception("Invalid conversion from $from to $to with a value of $number");
+		throw new \Exception("Invalid conversion from $from to $to with a value of $number");
 	}
 }
