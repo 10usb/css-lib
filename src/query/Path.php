@@ -177,7 +177,7 @@ class Path {
 	private function isMatchingTail($selector, $depth, $offset){
 		$target = $this->stack[$depth][$offset];
 		
-		if($selector->getTagName() && $target->getTagName()!=$selector->getTagName()) return false;
+		if($selector->getTagName() && $selector->getTagName()!='*' && $target->getTagName()!=$selector->getTagName()) return false;
 		if($selector->getIdentification() && $target->getIdentification()!=$selector->getIdentification()) return false;
 		if($selector->getPseudos()){
 			foreach($selector->getPseudos() as $pseudo){

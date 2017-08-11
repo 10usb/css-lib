@@ -62,7 +62,7 @@ class RuleSet extends PropertySet {
 			
 			$subtext = $matches[2];
 			while($offset < strlen($subtext)){
-				if(!preg_match('/^([\.:#]?)([a-z0-1\-]+)/is', substr($subtext, $offset), $matches)) throw new \Exception("Invalid property at '".substr($text, $offset, 20)."'");
+				if(!preg_match('/^([\.:#]?)((:?[a-z0-1\-]|\*)+)/is', substr($subtext, $offset), $matches)) throw new \Exception("Invalid property at '".substr($text, $offset, 20)."'");
 				
 				switch($matches[1]){
 					case '': $selector->setTagName($matches[2]); break;
