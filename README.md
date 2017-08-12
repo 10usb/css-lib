@@ -1,10 +1,10 @@
-# css-lib
-
 This library allowes you parse a Cascading Style Sheets (CSS) document from which you can query property values given a path. The translation with of without inheritance of the values is up to you to decide. This gives you the freedom to create your own rules.
 
 The path to construct is stack based, therefore it is easily implemented in recursive procedures. For example traversing a DOM structure.
 
-## Example
+As an extra this library supports is the ability to minify or reformat the contents by loading it and then respoduce with a new format.
+
+# Example
 ```php
 $document = new Document();
 
@@ -22,9 +22,7 @@ $path->push()->setTagName('section')->addClass('slides');
 echo $path->getValue('height');
 ```
 
-As an extra this library supports is the ability to minify or reformat the contents by loading it and then respoduce with a new format.
-
-## TODO's
+# TODO's
  - Support for At-Rules
  - Default example kit for a HTML inliner
  - Make a HTMLify formatter set
