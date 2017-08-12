@@ -41,13 +41,24 @@ class PropertySet {
 	
 	/**
 	 * 
-	 * @param string $key
+	 * @param string|string[] $key
+	 * @param string|bool $match
 	 * @return \csslib\Property|boolean
 	 */
-	public function getProperty($key){
-		foreach($this->properties as $property){
-			if($property->getName()==$key){
-				return $property;
+	public function getProperty($key, &$match = false){
+		if(is_array($key)){
+			foreach(array_reverse($this->properties) as $property){
+				if(in_array($property->getName(), $key)){
+					$match = $property->getName();
+					return $property;
+				}
+			}
+		}else{
+			foreach(array_reverse($this->properties) as $property){
+				if($property->getName()==$key){
+					$match = $key;
+					return $property;
+				}
 			}
 		}
 		return false;
