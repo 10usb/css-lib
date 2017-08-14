@@ -49,12 +49,12 @@ class RuleSet extends PropertySet {
 	 * @return \csslib\Selector
 	 */
 	public static function parseSelector($text){
-		$text = preg_replace('/(\>)\s+/is', '>', $text);
+		$text = preg_replace('/(\>|\+|~)\s+/is', '$1', $text);
 		
 		$selector	= null;
 		
 		foreach(preg_split('/\s+/', $text, -1, PREG_SPLIT_NO_EMPTY) as $part){
-			if(!preg_match('/^([\>\+~]?)([^ >]+)$/is', $part, $matches)) throw new \Exception("Invalid selector part '$part'");
+			if(!preg_match('/^([\>\+~]?)([^ >\+~]+)$/is', $part, $matches)) throw new \Exception("Invalid selector part '$part'");
 			
 			$selector = $selector ? $selector->add($matches[1] ? $matches[1] : false) : Selector::create();
 			
