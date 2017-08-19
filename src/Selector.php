@@ -69,7 +69,7 @@ class Selector {
 	 * @param string[] $classes
 	 * @param string[] $pseudos
 	 */
-	private function __construct($parent = null, $type = self::T_DESCENDANT, $id = false, $tagName = false, $classes = false, $attributes = false, $pseudos = false){
+	private function __construct($parent = null, $type = self::T_DESCENDANT, $identification = false, $tagName = false, $classes = false, $attributes = false, $pseudos = false){
 		$this->parent			= $parent;
 		$this->type				= $type;
 		$this->identification	= $identification;
