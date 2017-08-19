@@ -5,21 +5,24 @@ namespace csslib;
  * Base class for any block type that has properties
  * @author 10usb
  */
-class PropertySet {
+abstract class PropertySet {
 	/**
-	 * 
+	 * Array of al properties in this property set
 	 * @var Property[]
 	 */
 	private $properties;
 	
+	/**
+	 * Initializes the internal variables
+	 */
 	public function __construct(){
 		$this->properties	= [];
 	}
 	
 	/**
-	 * 
-	 * @param string $key
-	 * @param string $value
+	 * Appending a property at the end and cleaning up any property with the same name
+	 * @param string $key Name of the property
+	 * @param string $value String representation of the values
 	 */
 	public function setProperty($key, $value = null){
 		if($key instanceof Property){
@@ -40,9 +43,9 @@ class PropertySet {
 	}
 	
 	/**
-	 * 
-	 * @param string|string[] $key
-	 * @param string|bool $match
+	 * Return the property if it is within this set otherwise retuns false
+	 * @param string|string[] $key Name or array of names of the property to obtain
+	 * @param string|bool $match Name of the matched property
 	 * @return \csslib\Property|boolean
 	 */
 	public function getProperty($key, &$match = false){
@@ -65,7 +68,7 @@ class PropertySet {
 	}
 	
 	/**
-	 * 
+	 * Returns an array of all properties in this set
 	 * @return \csslib\Property[]
 	 */
 	public function getProperties(){
@@ -74,7 +77,7 @@ class PropertySet {
 	
 	
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation
 	 * @return string
 	 */
 	public function __toString(){

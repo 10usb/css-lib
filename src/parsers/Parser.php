@@ -25,7 +25,7 @@ class Parser {
 	private $offset;
 	
 	/**
-	 * 
+	 * Constructs a parser for a target segment
 	 * @param \csslib\Segment $segment
 	 */
 	public function __construct($segment){
@@ -33,7 +33,7 @@ class Parser {
 	}
 	
 	/**
-	 * 
+	 * Returns the target segment
 	 * @return \csslib\Segment
 	 */
 	public function getSegment(){
@@ -41,7 +41,7 @@ class Parser {
 	}
 	
 	/**
-	 * 
+	 * Sets the source for parse
 	 * @param unknown $text
 	 */
 	public function setSource($text){
@@ -61,7 +61,7 @@ class Parser {
 	}
 	
 	/**
-	 * 
+	 * Returns the text that remains
 	 * @return string
 	 */
 	public function getText(){
@@ -69,7 +69,7 @@ class Parser {
 	}
 	
 	/**
-	 * 
+	 * Returns true if there is remaining text
 	 * @return boolean
 	 */
 	public function hasText(){
@@ -77,7 +77,7 @@ class Parser {
 	}
 	
 	/**
-	 * 
+	 * Performs the parsing
 	 */
 	public function parse(){
 		$state = new Group($this, $this->segment);

@@ -7,17 +7,24 @@ namespace csslib\values;
  */
 
 class Color extends Value {
+	/**
+	 * Regex pattern to validate a color value
+	 * @var string PATTERN
+	 */
 	const PATTERN = '/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is';
 	
 	/**
-	 * 
-	 * @var number
+	 * The values of the color
+	 * @var number $red
+	 * @var number $green
+	 * @var number $blue
 	 */
 	private $red, $green, $blue;
 
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSValue::init()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::init()
 	 */
 	protected function init(){
 		if(preg_match('/^\#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/is', strtolower($this->value), $matches)){
@@ -34,32 +41,36 @@ class Color extends Value {
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSValue::isColor()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::isColor()
 	 */
 	public function isColor(){
 		return true;
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSValue::getRed()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::getRed()
 	 */
 	public function getRed($throw = true){
 		return $this->red;
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSValue::getGreen()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::getGreen()
 	 */
 	public function getGreen($throw = true){
 		return $this->green;
 	}
 	
 	/**
-	 * (non-PHPdoc)
-	 * @see CSSValue::getBlue()
+	 * 
+	 * {@inheritDoc}
+	 * @see \csslib\values\Value::getBlue()
 	 */
 	public function getBlue($throw = true){
 		return $this->blue;

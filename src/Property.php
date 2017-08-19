@@ -1,14 +1,27 @@
 <?php
 namespace csslib;
 
+/**
+ * Represent a property within a propertyset consisting of an name and an list of values 
+ * @author 10usb
+ */
 class Property {
+	/**
+	 * Name of the property
+	 * @var string
+	 */
 	private $name;
+	
+	/**
+	 * Array of value lists
+	 * @var ValueList[]
+	 */
 	private $values;
 	
 	/**
-	 * 
-	 * @param string $name
-	 * @param string $values
+	 * Constructs a property and parses the string value into value list objects
+	 * @param string $name Name of the property
+	 * @param string $value Valid string of values
 	 */
 	public function __construct($name, $value){
 		if(!preg_match_all('/(\s(,\s*)?("(([^"]\\"|[^"])+)"|\'(([^\']\\\'|[^\'])+)\'|[^",]+))/is', " $value ", $matches, PREG_SET_ORDER)) throw new \Exception("Invalid property '$value'");
@@ -21,7 +34,7 @@ class Property {
 	}
 	
 	/**
-	 * 
+	 * Name of the property
 	 * @return string
 	 */
 	public function getName(){
@@ -29,7 +42,7 @@ class Property {
 	}
 	
 	/**
-	 * Return howmany arguments there are
+	 * Return how many value lists there are
 	 * @return number
 	 */
 	public function getCount(){
@@ -37,15 +50,16 @@ class Property {
 	}
 	
 	/**
-	 * Returns the value at the given position
-	 * @param CSSValue $index
+	 * Returns the value list at the given position
+	 * @param integer $index Index to get
+	 * @return \csslib\ValueList
 	 */
 	public function getValueList($index){
 		return $this->values[$index];
 	}
 
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation
 	 * @return string
 	 */
 	public function __toString(){

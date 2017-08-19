@@ -2,7 +2,7 @@
 namespace csslib\formatters;
 
 /**
- * Formats the css element in a pretty format
+ * Formats the CSS elements in a pretty format
  * @author 10usb
  */
 class Pretty implements Formatter {
@@ -20,7 +20,7 @@ class Pretty implements Formatter {
 	}
 	
 	/**
-	 * 
+	 * Formats a selector
 	 * @param \csslib\Selector $selector
 	 * @param boolean $child
 	 * @return string

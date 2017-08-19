@@ -4,59 +4,78 @@ namespace csslib;
 use csslib\formatters\Pretty;
 
 /**
- * Represent a single selector of a ruleset
+ * Represent a single selector of a ruleset or a subpart of a selector
  * @author 10usb
  */
 class Selector {
+	/**
+	 * The matching parent selector should be an ascendant of this matching selector
+	 * @var string T_DESCENDANT
+	 */
 	const T_DESCENDANT			= false;
+	
+	/**
+	 * The matching parent selector should be a direct ascendant of this matching selector
+	 * @var string T_CHILD
+	 */
 	const T_CHILD				= '>';
+	
+	/**
+	 * The matching parent selector should be a direct preceding sibling
+	 * @var string T_ADJACENT_SIBLING
+	 */
 	const T_ADJACENT_SIBLING	= '+';
+	
+	/**
+	 * The matching parent selector should be any preceding sibling
+	 * @var string T_GENERAL_SIBLING
+	 */
 	const T_GENERAL_SIBLING		= '~';
 	
 	/**
-	 * 
+	 * The parent of this selector part
 	 * @var \csslib\Selector
 	 */
 	private $parent;
 	
 	/**
-	 * 
+	 * Type of relation this selector has to its parent
 	 * @var string
 	 */
 	private $type;
 	
 	/**
-	 *
+	 *	Tagname to match
 	 * @var string
 	 */
 	private $tagName;
 	
 	/**
-	 *
+	 * Attributes to match
 	 * @var Attribute[]
 	 */
 	private $attributes;
 	
 	/**
-	 * 
+	 * Identification to match
 	 * @var string
 	 */
 	private $identification;
 	
 	/**
-	 * 
+	 * Classes to match
 	 * @var string[]
 	 */
 	private $classes;
 	
 	/**
-	 * 
+	 * Pseudo classes to match
 	 * @var Pseudo[]
 	 */
 	private $pseudos;
 	
 	/**
-	 * 
+	 * Child selector
 	 * @var \csslib\Selector
 	 */
 	private $selector;
@@ -82,15 +101,15 @@ class Selector {
 	
 	/**
 	 * Returns the type of this selector
-	 * @return string
+	 * @return string|boolean
 	 */
 	public function getType(){
 		return $this->type;
 	}
 	
 	/**
-	 * 
-	 * @param string $name
+	 * Sets the tag name to match
+	 * @param string $name Name of the tag
 	 * @return \csslib\Selector
 	 */
 	public function setTagName($name){
@@ -99,15 +118,15 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @return string
+	 * Returns the tagname to match
+	 * @return string|boolean
 	 */
 	public function getTagName(){
 		return $this->tagName;
 	}
 	
 	/**
-	 * 
+	 * Sets the identification to match
 	 * @param string $identification
 	 * @return \csslib\Selector
 	 */
@@ -117,16 +136,16 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @return string
+	 * Returns the identification to match
+	 * @return string|boolean
 	 */
 	public function getIdentification(){
 		return $this->identification;
 	}
 	
 	/**
-	 * 
-	 * @param string $name
+	 * Append a classname to match
+	 * @param string $name Name of the class
 	 * @return \csslib\Selector
 	 */
 	public function addClass($name){
@@ -135,7 +154,7 @@ class Selector {
 	}
 	
 	/**
-	 * 
+	 * Returns an array of classes
 	 * @return string[]
 	 */
 	public function getClasses(){
@@ -143,9 +162,10 @@ class Selector {
 	}
 	
 	/**
-	 *
-	 * @param string $name
-	 * @param mixed $argument
+	 * Append an attributes to match
+	 * @param string $name Name of the attribute
+	 * @param string $value Value to match
+	 * @param string $type Type of matching to use
 	 * @return \csslib\Selector
 	 */
 	public function addAttribute($key, $value, $type = Attribute::T_DEFAULT){
@@ -154,7 +174,7 @@ class Selector {
 	}
 	
 	/**
-	 * 
+	 * Returns an array of attributes
 	 * @return \csslib\Attribute[]
 	 */
 	public function getAttributes(){
@@ -162,9 +182,9 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @param string $name
-	 * @param mixed $argument
+	 * Append an pseudo class to match 
+	 * @param string $name Name of the pseudo class
+	 * @param mixed $argument Argument of the pseudo class
 	 * @return \csslib\Selector
 	 */
 	public function addPseudo($name, $argument = false){
@@ -173,7 +193,7 @@ class Selector {
 	}
 	
 	/**
-	 * 
+	 * Returns an array of the pseudo classes to match
 	 * @return \csslib\Pseudo[]
 	 */
 	public function getPseudos(){
@@ -181,12 +201,12 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @param string $type
-	 * @param string $id
-	 * @param string $tagName
-	 * @param string[] $classes
-	 * @param string[] $pseudos
+	 * Creates an sets the child selector
+	 * @param string $type Type of the selector
+	 * @param string $identification Identification to match (#example)
+	 * @param string $tagName Tagname to match (example)
+	 * @param string[] $classes Classname to match (.example)
+	 * @param string[] $pseudos Pseudo classes to match (:example)
 	 * @return \csslib\Selector
 	 */
 	public function add($type = false, $identification = false, $tagName = false, $classes = false, $pseudos = false){
@@ -194,8 +214,8 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @param \csslib\Selector $selector
+	 * Append the selector(s) to this selector
+	 * @param \csslib\Selector $selector Selector to be appended
 	 * @param string $type
 	 */
 	public function append($selector, $type){
@@ -249,7 +269,7 @@ class Selector {
 	}
 	
 	/**
-	 * Makes a clone of it self
+	 * Let the clone wars begin
 	 */
 	public function __clone() {
 		if($this->selector){
@@ -259,7 +279,7 @@ class Selector {
 	}
 	
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation
 	 * @return string
 	 */
 	public function __toString(){
@@ -267,8 +287,8 @@ class Selector {
 	}
 	
 	/**
-	 * 
-	 * @param string $type
+	 * Used to create a selector instance
+	 * @param string $type Type of the selector
 	 * @return \csslib\Selector
 	 */
 	public static function create($type = false){

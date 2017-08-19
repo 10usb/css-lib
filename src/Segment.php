@@ -3,7 +3,7 @@ namespace csslib;
 
 /**
  * A document can consist of 1 or multiple segments
- * @author tinus
+ * @author 10usb
  */
 class Segment extends Group {
 	/**
@@ -30,8 +30,8 @@ class Segment extends Group {
 	}
 	
 	/**
-	 * Returns the CSS
-	 * @param csslib\formatters\Formatter $formatter
+	 * Returns the CSS representaion
+	 * @param csslib\formatters\Formatter $formatter Formatter to be used for generation the CSS 
 	 * @return string
 	 */
 	public function format($formatter){

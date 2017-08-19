@@ -5,6 +5,10 @@ use csslib\Selector;
 use csslib\PropertySet;
 use csslib\formatters\Pretty;
 
+/**
+ * This is the main class for making queries on a document, allowing by pushing and poping selectors to construct a path, and retrieving values that calculated
+ * @author 10usb
+ */
 class Path {
 	/**
 	 * 
@@ -44,7 +48,7 @@ class Path {
 	
 	
 	/**
-	 * 
+	 * Construct a path for the given document with a translator to proccess to requested property
 	 * @param \csslib\Document $document
 	 * @param \csslib\query\Translator $translator
 	 */
@@ -58,9 +62,9 @@ class Path {
 	}
 	
 	/**
-	 * 
-	 * @param string $key
-	 * @return mixed
+	 * Returns the calculated property value
+	 * @param string $key Name of the property
+	 * @return \csslib\values\Value|mixed
 	 */
 	public function getValue($key){
 		$this->loadCurrent();
@@ -69,7 +73,7 @@ class Path {
 	}
 	
 	/**
-	 * 
+	 * Returns the current state
 	 * @return \csslib\query\State
 	 */
 	public function getState(){
@@ -79,7 +83,7 @@ class Path {
 	}
 	
 	/**
-	 * 
+	 * Pushes a new selector to the path and return that instance
 	 * @return \csslib\Selector
 	 */
 	public function push(){
@@ -103,7 +107,7 @@ class Path {
 	}
 	
 	/**
-	 * 
+	 * Pop the last selector
 	 */
 	public function pop(){
 		if(count($this->stack) > $this->depth) array_pop($this->stack);
@@ -117,12 +121,49 @@ class Path {
 	}
 	
 	/**
+	 * Returns true if this path matches the give selector
+	 * @param \csslib\Selector $selector
+	 * @return boolean
+	 */
+	public function isMatch($selector){
+		return $this->isMatchingTail($selector->getEnd(), $this->depth - 1, count($this->stack[$this->depth - 1]) - 1);
+	}
+
+	/**
+	 * 
+	 * Returns the CSS
+	 * @return string
+	 */
+	public function __toString(){
+		/**
+		 * @var \csslib\Selector $selector
+		 */
+		$selector = null;
+		
+		foreach($this->stack as $siblings){
+			foreach($siblings as $index=>$sibling){
+				if($index == 0){
+					if($selector){
+						$selector = $selector->append($sibling, Selector::T_CHILD);
+					}else{
+						$selector = $selector = clone $sibling;
+					}
+				}else{
+					$selector = $selector->append($sibling, Selector::T_ADJACENT_SIBLING);
+				}
+			}
+		}
+		
+		return Pretty::selector($selector->get());
+	}
+	
+	/**
 	 * 
 	 */
 	private function loadCurrent(){
 		if(!$this->loaded){
 			$matches = [];
-			$walker = new Walker($this->document, $this->translator);
+			$walker = new Walker($this->document);
 			foreach($walker as $index=>$ruleSet){
 				$this->match($matches, $ruleSet, $index);
 			}
@@ -166,15 +207,6 @@ class Path {
 		
 		$matches[] = [$specificity, $ruleSet];
 		return true;
-	}
-	
-	/**
-	 * TODO make this function real ^^
-	 * @param \csslib\Selector $selector
-	 * @return boolean
-	 */
-	public function isMatch($selector){
-		return $this->isMatchingTail($selector->getEnd(), $this->depth - 1, count($this->stack[$this->depth - 1]) - 1);
 	}
 	
 	/**
@@ -239,33 +271,5 @@ class Path {
 		}
 		
 		return false;
-	}
-
-	/**
-	 * Returns the CSS
-	 * @return string
-	 */
-	public function __toString(){
-		/**
-		 * @var \csslib\Selector $selector
-		 */
-		$selector = null;
-		
-		foreach($this->stack as $siblings){
-			foreach($siblings as $index=>$sibling){
-				if($index == 0){
-					if($selector){
-						$selector = $selector->append($sibling, Selector::T_CHILD);
-					}else{
-						$selector = $selector = clone $sibling;
-					}
-				}else{
-					$selector = $selector->append($sibling, Selector::T_ADJACENT_SIBLING);
-				}
-			}
-		}
-		
-		
-		return Pretty::selector($selector->get());
 	}
 }

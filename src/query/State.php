@@ -1,6 +1,10 @@
 <?php
 namespace csslib\query;
 
+/**
+ * Used to store a state in the chain of property sets constructed by a path
+ * @author 10usb
+ */
 class State {
 	/**
 	 * 
@@ -21,10 +25,10 @@ class State {
 	private $chain;
 	
 	/**
-	 * 
-	 * @param unknown $document
-	 * @param unknown $translator
-	 * @param unknown $chain
+	 * Constructs a state object
+	 * @param \csslib\Document $document
+	 * @param \csslib\query\Translator $translator
+	 * @param \csslib\query\Chain $chain
 	 */
 	public function __construct($document, $translator, $chain){
 		$this->document		= $document;
@@ -33,7 +37,7 @@ class State {
 	}
 	
 	/**
-	 * 
+	 * Returns the calculated property value
 	 * @param string $key
 	 * @return mixed
 	 */

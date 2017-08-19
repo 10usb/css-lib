@@ -2,7 +2,7 @@
 namespace csslib;
 
 /**
- * Psudo class allows storing parsed data for the argument over a plain string
+ * Pseudo class allows storing parsed data for the argument over a plain string
  * @author 10usb
  */
 class Pseudo {
@@ -19,9 +19,9 @@ class Pseudo {
 	private $argument;
 	
 	/**
-	 * 
-	 * @param string $name
-	 * @param mixed $argument
+	 * Construct an pseudo class instance
+	 * @param string $name Name of the class
+	 * @param mixed $argument Argument to the pseudo class
 	 */
 	public function __construct($name, $argument = false){
 		$this->name		= $name;
@@ -29,7 +29,7 @@ class Pseudo {
 	}
 	
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation
 	 * @return string
 	 */
 	public function __toString(){

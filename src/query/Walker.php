@@ -16,12 +16,6 @@ class Walker implements \Iterator {
 	private $document;
 	
 	/**
-	 *
-	 * @var \csslib\query\Translator
-	 */
-	private $translator;
-	
-	/**
 	 * 
 	 * @var ArrayIterator[]
 	 */
@@ -42,11 +36,9 @@ class Walker implements \Iterator {
 	/**
 	 *
 	 * @param \csslib\Document $document
-	 * @param \csslib\query\Translator $translator
 	 */
-	public function __construct($document, $translator){
+	public function __construct($document){
 		$this->document		= $document;
-		$this->translator	= $translator;
 		
 		$this->stack		= [];
 		$this->index		= -1;
@@ -55,6 +47,8 @@ class Walker implements \Iterator {
 	
 	/**
 	 * 
+	 * {@inheritDoc}
+	 * @see Iterator::rewind()
 	 */
 	public function rewind(){
 		$this->stack = [ new \ArrayIterator($this->document->getSegments()) ];
@@ -64,6 +58,49 @@ class Walker implements \Iterator {
 		$this->fetch();
 	}
 	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @see Iterator::next()
+	 */
+	public function next(){
+		$iterator = end($this->stack);
+		$iterator->next();
+		$this->fetch();
+	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @see Iterator::valid()
+	 */
+	public function valid(){
+		return !!$this->stack;
+	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @return \csslib\RuleSet
+	 * @see Iterator::current()
+	 */
+	public function current(){
+		return $this->current;
+	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @return integer
+	 * @see Iterator::key()
+	 */
+	public function key(){
+		return $this->index;
+	}
+
+	/**
+	 * 
+	 */
 	private function fetch(){
 		$iterator = end($this->stack);
 		
@@ -87,38 +124,5 @@ class Walker implements \Iterator {
 		}else{
 			$this->next();
 		}
-	}
-	
-	/**
-	 *
-	 */
-	public function next(){
-		$iterator = end($this->stack);
-		$iterator->next();
-		$this->fetch();
-	}
-	
-	/**
-	 *
-	 * @return boolean
-	 */
-	public function valid(){
-		return !!$this->stack;
-	}
-	
-	/**
-	 * 
-	 * @return \csslib\RuleSet
-	 */
-	public function current(){
-		return $this->current;
-	}
-	
-	/**
-	 * 
-	 * @return integer
-	 */
-	public function key(){
-		return $this->index;
 	}
 }

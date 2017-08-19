@@ -2,39 +2,69 @@
 namespace csslib;
 
 /**
- * Psudo class allows storing parsed data for the argument over a plain string
+ * For storing attribute selector information used when making an selection
  * @author 10usb
  */
 class Attribute {
+	/**
+	 * Matches any element whose value is exactly the same of any elment who has the attrubute when value is empty
+	 * @var string T_DEFAULT
+	 */
 	const T_DEFAULT		= '';
+	
+	/**
+	 * Matches any element whose values whitespace-separated and one of those values is exactly the same
+	 * @var string T_IN
+	 */
 	const T_IN			= '~';
+	
+	/**
+	 * Macthes any element whose value begins with followd by an "-" character
+	 * @var string T_FIRST
+	 */
 	const T_FIRST		= '|';
+	
+	/**
+	 * Macthes any element whose value begins with
+	 * @var string T_BEGINS
+	 */
 	const T_BEGINS		= '^';
+	
+	/**
+	 * Matches any element whose value ends with
+	 * @var string T_ENDS
+	 */
 	const T_ENDS		= '$';
+	
+	/**
+	 * Matches any eleement whose value contains
+	 * @var string T_CONTAINS
+	 */
 	const T_CONTAINS	= '*';
 	
 	/**
 	 *
-	 * @var string
+	 * @var string $key
 	 */
 	private $key;
 	
 	/**
-	 *
-	 * @var string
+	 * The value to be matches
+	 * @var string $value
 	 */
 	private $value;
 	
 	/**
-	 * 
-	 * @var string
+	 * The matching type
+	 * @var string $type
 	 */
 	private $type;
 	
 	/**
-	 * 
-	 * @param string $name
-	 * @param mixed $argument
+	 * Constructs an Attribute class with key value and type
+	 * @param string $key
+	 * @param string $value
+	 * @param string $type
 	 */
 	public function __construct($key, $value, $type){
 		$this->key		= $key;
@@ -43,7 +73,7 @@ class Attribute {
 	}
 	
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation
 	 * @return string
 	 */
 	public function __toString(){

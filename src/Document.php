@@ -1,23 +1,27 @@
 <?php
 namespace csslib;
 
+/**
+ * The main class for processing a cascading style sheet files. It may contain multiple segments the each can represent a file
+ * @author 10usb
+ */
 class Document {
 	/**
-	 * Can be a ruleset or an At-Rule
+	 * All the segment in the document on which query can be made
 	 * @var \csslib\Segment[]
 	 */
 	private $segments;
 	
 	/**
-	 *
+	 * Construct a new document
 	 */
 	public function __construct(){
 		$this->segments	= [];
 	}
 	
 	/**
-	 * Return if this document contains a segment with the given name
-	 * @param string $name
+	 * Return true if this document contains a segment with the given name
+	 * @param string $name Name of the segment
 	 * @return boolean
 	 */
 	public function contains($name){
@@ -29,9 +33,9 @@ class Document {
 	
 	/**
 	 * Adds a new segment 
-	 * @param string|\csslib\Segment $segment
-	 * @param \csslib\Segment $other
-	 * @return \csslib\Segment
+	 * @param string|\csslib\Segment $segment Segment to be addded
+	 * @param \csslib\Segment $other If given the segment to be added wil be inserted before the other segment
+	 * @return \csslib\Segment The added segment
 	 */
 	public function addSegment($segment, $other = null){
 		if(!$segment instanceof Segment){
@@ -48,8 +52,8 @@ class Document {
 	}
 	
 	/**
-	 * Returns the segment with the given namen otherwise false
-	 * @param string $name
+	 * Returns the segment with the given name otherwise false
+	 * @param string $name Name of the segment
 	 * @return \csslib\Segment|boolean
 	 */
 	public function getSegment($name){
@@ -60,7 +64,7 @@ class Document {
 	}
 	
 	/**
-	 * 
+	 * Returns an array of all the segment in this document
 	 * @return \csslib\Segment[]
 	 */
 	public function getSegments(){
@@ -68,7 +72,7 @@ class Document {
 	}
 	
 	/**
-	 * 
+	 * Returns the index of the segment 
 	 * @param string|\csslib\Segment $segment
 	 * @return \csslib\Segment|boolean
 	 */

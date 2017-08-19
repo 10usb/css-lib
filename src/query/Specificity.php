@@ -2,7 +2,7 @@
 namespace csslib\query;
 
 /**
- * 
+ * The specificity defines the priority and thus the order of the properties in an result property set
  * @author 10usb
  */
 class Specificity {
@@ -16,7 +16,7 @@ class Specificity {
 	private $a = 0, $b = 0, $c = 0, $i = -1;
 	
 	/**
-	 * 
+	 * Set an index for the specificity
 	 * @param integer $index
 	 */
 	public function setIndex($index){
@@ -24,6 +24,15 @@ class Specificity {
 	}
 	
 	/**
+	 * Returns a string representation of this specificity
+	 * @return string
+	 */
+	public function __toString(){
+		return sprintf('%d-%d-%d-%d', $this->a, $this->b, $this->c, $this->i);
+	}
+	
+	/**
+	 * Compares to specificities
 	 * @param \csslib\query\Specificity $left
 	 * @param \csslib\query\Specificity $right
 	 * @return integer
@@ -51,9 +60,5 @@ class Specificity {
 		if($selector->getTagName()) $specificity->c++;
 		
 		return $specificity;
-	}
-	
-	public function __toString(){
-		return sprintf('%d-%d-%d-%d', $this->a, $this->b, $this->c, $this->i);
 	}
 }

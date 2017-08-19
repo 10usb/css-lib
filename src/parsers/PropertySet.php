@@ -2,10 +2,10 @@
 namespace csslib\parsers;
 
 /**
- * 
+ * Base class for parsing propery sets
  * @author 10usb
  */
-class PropertySet {
+abstract class PropertySet {
 	/**
 	 * 
 	 * @var \csslib\parsers\Parser
@@ -19,7 +19,7 @@ class PropertySet {
 	private $propertySet;
 	
 	/**
-	 * 
+	 * Initializes the internal variables
 	 * @param \csslib\parsers\Parser $parser
 	 */
 	public function __construct($parser){
@@ -27,7 +27,7 @@ class PropertySet {
 	}
 	
 	/**
-	 * 
+	 * Sets the target property set
 	 * @param \csslib\PropertySet $propertySet
 	 */
 	public function setPropertySet($propertySet){
@@ -35,7 +35,7 @@ class PropertySet {
 	}
 	
 	/**
-	 * 
+	 * Performs the parsing
 	 */
 	public function parse(){
 		while($this->parser->hasText()){

@@ -27,7 +27,7 @@ class Group {
 	}
 	
 	/**
-	 * 
+	 * Performs the parsing
 	 */
 	public function parse(){
 		while($this->parser->hasText()){

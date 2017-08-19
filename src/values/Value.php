@@ -2,20 +2,20 @@
 namespace csslib\values;
 
 /**
- * Base class for al values in css 
+ * Base class for all values in CSS 
  * @author 10usb
  */
 abstract class Value {
 	/**
-	 * 
+	 * The original value
 	 * @var string
 	 */
 	protected $value;
 	
 	/**
-	 * 
+	 * Parses a string into the correct value
 	 * @param unknown $value
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return \csslib\values\Value
 	 */
 	public static function parse($value){
@@ -28,7 +28,7 @@ abstract class Value {
 	}
 	
 	/**
-	 * 
+	 * Initializes the internal values and calls the child initialize method
 	 * @param string $value
 	 */
 	private function __construct($value){
@@ -46,7 +46,7 @@ abstract class Value {
 	 * @param string $value
 	 * @param string $unit
 	 * @param boolean $throw
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return boolean
 	 */
 	public function getMeasurement($unit, $value = null, $throw = true){
@@ -55,9 +55,9 @@ abstract class Value {
 	}
 	
 	/**
-	 * Return the name
+	 * Returns the name
 	 * @param boolean $throw
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return boolean
 	 */
 	public function getName($throw = true){
@@ -74,9 +74,9 @@ abstract class Value {
 	}
 	
 	/**
-	 * The red value
+	 * The red color value
 	 * @param boolean $throw
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return boolean
 	 */
 	public function getRed($throw = true){
@@ -84,9 +84,9 @@ abstract class Value {
 	}
 	
 	/**
-	 * The green value
+	 * The green color value
 	 * @param boolean $throw
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return boolean
 	 */
 	public function getGreen($throw = true){
@@ -95,9 +95,9 @@ abstract class Value {
 	}
 	
 	/**
-	 * The blue value
+	 * The blue color value
 	 * @param boolean $throw
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return boolean
 	 */
 	public function getBlue($throw = true){
@@ -117,7 +117,7 @@ abstract class Value {
 	}
 
 	/**
-	 * Returns the CSS
+	 * Returns the CSS representation (original value)
 	 * @return string
 	 */
 	public function __toString(){
